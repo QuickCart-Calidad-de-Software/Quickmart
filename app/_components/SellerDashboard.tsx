@@ -37,7 +37,7 @@ interface SellerDashboardProps {
 
 export default function SellerDashboard({ userName }: SellerDashboardProps) {
   const [activeTab, setActiveTab] = useState<"Buyer" | "Seller">("Buyer");
-  const [activeSection, setActiveSection] = useState<"Dashboard" | "Wants" | "Transactions" | "Inbox" | "Settings">("Dashboard");
+  const [activeSection, setActiveSection] = useState<"Dashboard" | "Pedidos" | "Estado de Inventario" | "Estadísticas Básicas"| "Settings">("Dashboard");
 
   // Función para renderizar el contenido según la sección activa
   const renderMainContent = () => {
@@ -173,7 +173,7 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
           </>
         );
 
-      case "Wants":
+      case "Pedidos":
         return (
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow">
             <h2 className="text-2xl font-bold mb-6">My Wants</h2>
@@ -189,10 +189,10 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
           </div>
         );
 
-      case "Transactions":
+      case "Estado de Inventario":
         return (
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow">
-            <h2 className="text-2xl font-bold mb-6">Transaction History</h2>
+            <h2 className="text-2xl font-bold mb-6">Estado de Inventario</h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
                 <div className="flex items-center gap-4">
@@ -230,10 +230,10 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
           </div>
         );
 
-      case "Inbox":
+      case "Estadísticas Básicas":
         return (
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow">
-            <h2 className="text-2xl font-bold mb-6">Messages</h2>
+            <h2 className="text-2xl font-bold mb-6">Estadísticas Básicas</h2>
             <div className="space-y-4">
               {mockMessages.map((msg) => (
                 <div key={msg.id} className="flex items-start gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
@@ -255,11 +255,11 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
       case "Settings":
         return (
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow">
-            <h2 className="text-2xl font-bold mb-6">Account Settings</h2>
+            <h2 className="text-2xl font-bold mb-6">Configuración de la Cuenta</h2>
             <div className="space-y-6">
               {/* Profile Settings */}
               <div>
-                <h3 className="text-lg font-semibold mb-4">Profile Information</h3>
+                <h3 className="text-lg font-semibold mb-4">Información del Perfil</h3>
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Full Name</label>
