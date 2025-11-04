@@ -34,3 +34,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Auth (NextAuth) setup
+
+This project uses Auth.js / NextAuth for authentication. You must provide a secret for session signing.
+
+- For development you can create a `.env.local` file in the project root with:
+
+```text
+NEXTAUTH_SECRET=your_dev_secret_here
+```
+
+- For production set the `NEXTAUTH_SECRET` environment variable in your hosting platform. The app will throw an error if this variable is missing in production.

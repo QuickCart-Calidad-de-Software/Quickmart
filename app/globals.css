@@ -12,8 +12,16 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Variables para modo oscuro */
+.dark {
+  --background: #1C1F24;
+  --foreground: #ededed;
+  color-scheme: dark;
+}
+
+/* Fallback para preferencia del sistema */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.dark) {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
