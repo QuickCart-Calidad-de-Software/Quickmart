@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SignOutButton from "./SignOutButton";
 
 interface Order {
   id: string;
@@ -176,15 +177,30 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
       case "Pedidos":
         return (
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow">
-            <h2 className="text-2xl font-bold mb-6">My Wants</h2>
-            <div className="text-center py-16">
-              <svg className="w-24 h-24 mx-auto text-gray-300 mb-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6z"></path>
-              </svg>
-              <p className="text-gray-500 text-lg mb-6">You haven't created any wants yet</p>
-              <button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold">
-                Create Your First Want
-              </button>
+            <h2 className="text-2xl font-bold mb-6">Gestión de Pedidos</h2>
+            <div className="space-y-4">
+              {mockOrders.map((order) => (
+                <div key={order.id} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    <div>
+                      <p className="font-semibold">{order.product}</p>
+                      <p className="text-sm text-gray-500">Pedido ID: #{order.id}</p>
+                      <p className="text-xs text-gray-400">{order.date}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-lg">{order.price}</p>
+                    <span className={`inline-block px-3 py-1 text-xs rounded-full ${
+                      order.status === "Pending"
+                        ? "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400"
+                        : "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400"
+                    }`}>
+                      {order.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         );
@@ -193,37 +209,41 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
         return (
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow">
             <h2 className="text-2xl font-bold mb-6">Estado de Inventario</h2>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                  <div>
-                    <p className="font-semibold">Milwaukee 2801-80 18Volts with...</p>
-                    <p className="text-sm text-gray-500">Transaction ID: #TX123456</p>
-                    <p className="text-xs text-gray-400">10/2/2020</p>
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <div className="w-full h-32 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+                <h3 className="font-semibold mb-2">Milwaukee 2801-80 18Volts</h3>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">Stock:</span>
+                  <span className="font-semibold text-green-600">25 unidades</span>
                 </div>
-                <div className="text-right">
-                  <p className="font-bold text-lg">$150.00</p>
-                  <span className="inline-block px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400 text-xs rounded-full">
-                    Completed
-                  </span>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">Precio:</span>
+                  <span className="font-semibold">$150.00</span>
                 </div>
               </div>
-              <div className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
-                  <div>
-                    <p className="font-semibold">ASRock Phantom Gaming...</p>
-                    <p className="text-sm text-gray-500">Transaction ID: #TX123455</p>
-                    <p className="text-xs text-gray-400">09/28/2020</p>
-                  </div>
+              <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <div className="w-full h-32 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+                <h3 className="font-semibold mb-2">ASRock Phantom Gaming</h3>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">Stock:</span>
+                  <span className="font-semibold text-red-600">3 unidades</span>
                 </div>
-                <div className="text-right">
-                  <p className="font-bold text-lg">$190.00</p>
-                  <span className="inline-block px-3 py-1 bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400 text-xs rounded-full">
-                    Completed
-                  </span>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">Precio:</span>
+                  <span className="font-semibold">$190.00</span>
+                </div>
+              </div>
+              <div className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
+                <div className="w-full h-32 bg-gray-200 dark:bg-gray-700 rounded mb-4"></div>
+                <h3 className="font-semibold mb-2">Producto Ejemplo 3</h3>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">Stock:</span>
+                  <span className="font-semibold text-orange-600">12 unidades</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-500">Precio:</span>
+                  <span className="font-semibold">$85.00</span>
                 </div>
               </div>
             </div>
@@ -234,20 +254,77 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
         return (
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 shadow">
             <h2 className="text-2xl font-bold mb-6">Estadísticas Básicas</h2>
-            <div className="space-y-4">
-              {mockMessages.map((msg) => (
-                <div key={msg.id} className="flex items-start gap-4 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
-                  <div className="w-12 h-12 bg-gray-300 rounded-full flex-shrink-0"></div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-start mb-2">
-                      <p className="font-semibold">{msg.sender}</p>
-                      <span className="text-xs text-gray-500">{msg.time}</span>
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{msg.message}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {/* Estadística 1 */}
+              <div className="p-6 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-blue-600 dark:text-blue-400">Ventas Totales</p>
+                    <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">$2,540</p>
                   </div>
-                  <span className="w-3 h-3 bg-blue-500 rounded-full flex-shrink-0"></span>
+                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xl">$</span>
+                  </div>
                 </div>
-              ))}
+              </div>
+              
+              {/* Estadística 2 */}
+              <div className="p-6 bg-green-50 dark:bg-green-900/30 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-green-600 dark:text-green-400">Productos Vendidos</p>
+                    <p className="text-2xl font-bold text-green-900 dark:text-green-100">47</p>
+                  </div>
+                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xl">📦</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Estadística 3 */}
+              <div className="p-6 bg-yellow-50 dark:bg-yellow-900/30 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-yellow-600 dark:text-yellow-400">Pedidos Pendientes</p>
+                    <p className="text-2xl font-bold text-yellow-900 dark:text-yellow-100">8</p>
+                  </div>
+                  <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xl">⏳</span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Estadística 4 */}
+              <div className="p-6 bg-purple-50 dark:bg-purple-900/30 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-purple-600 dark:text-purple-400">Clientes Activos</p>
+                    <p className="text-2xl font-bold text-purple-900 dark:text-purple-100">23</p>
+                  </div>
+                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xl">👥</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Productos más vendidos */}
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold mb-4">Productos Más Vendidos</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded">
+                  <span>Milwaukee 2801-80 18Volts</span>
+                  <span className="font-semibold">15 ventas</span>
+                </div>
+                <div className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded">
+                  <span>ASRock Phantom Gaming</span>
+                  <span className="font-semibold">12 ventas</span>
+                </div>
+                <div className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded">
+                  <span>Producto Ejemplo 3</span>
+                  <span className="font-semibold">8 ventas</span>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -262,10 +339,10 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
                 <h3 className="text-lg font-semibold mb-4">Información del Perfil</h3>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Full Name</label>
+                    <label className="block text-sm font-medium mb-2">Nombre Completo</label>
                     <input
                       type="text"
-                      defaultValue="Robert Zimmerman"
+                      defaultValue={userName}
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
                     />
                   </div>
@@ -273,7 +350,7 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
                     <label className="block text-sm font-medium mb-2">Email</label>
                     <input
                       type="email"
-                      defaultValue="robert@example.com"
+                      defaultValue="vendedor@example.com"
                       className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
                     />
                   </div>
@@ -282,26 +359,29 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
 
               {/* Notification Settings */}
               <div>
-                <h3 className="text-lg font-semibold mb-4">Notifications</h3>
+                <h3 className="text-lg font-semibold mb-4">Notificaciones</h3>
                 <div className="space-y-3">
                   <label className="flex items-center gap-3">
                     <input type="checkbox" className="w-4 h-4" defaultChecked />
-                    <span className="text-sm">Email notifications for new messages</span>
+                    <span className="text-sm">Notificaciones por email para nuevos mensajes</span>
                   </label>
                   <label className="flex items-center gap-3">
                     <input type="checkbox" className="w-4 h-4" defaultChecked />
-                    <span className="text-sm">Email notifications for order updates</span>
+                    <span className="text-sm">Notificaciones por email para actualizaciones de pedidos</span>
                   </label>
                   <label className="flex items-center gap-3">
                     <input type="checkbox" className="w-4 h-4" />
-                    <span className="text-sm">Marketing emails</span>
+                    <span className="text-sm">Emails promocionales</span>
                   </label>
                 </div>
               </div>
 
-              <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold">
-                Save Changes
-              </button>
+              <div className="flex gap-4">
+                <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold">
+                  Guardar Cambios
+                </button>
+                <SignOutButton />
+              </div>
             </div>
           </div>
         );
@@ -332,6 +412,8 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
             <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
             <span>{userName}</span>
           </div>
+          {/* Botón de Logout */}
+          <SignOutButton />
         </nav>
       </header>
 
@@ -350,35 +432,34 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
               Dashboard
             </button>
             <button
-              onClick={() => setActiveSection("Wants")}
+              onClick={() => setActiveSection("Pedidos")}
               className={`text-left px-4 py-2 rounded ${
-                activeSection === "Wants"
+                activeSection === "Pedidos"
                   ? "bg-green-500 text-white"
                   : "hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
             >
-              Wants
+              Pedidos
             </button>
             <button
-              onClick={() => setActiveSection("Transactions")}
+              onClick={() => setActiveSection("Estado de Inventario")}
               className={`text-left px-4 py-2 rounded ${
-                activeSection === "Transactions"
+                activeSection === "Estado de Inventario"
                   ? "bg-green-500 text-white"
                   : "hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
             >
-              Transactions
+              Estado de Inventario
             </button>
             <button
-              onClick={() => setActiveSection("Inbox")}
-              className={`text-left px-4 py-2 rounded relative ${
-                activeSection === "Inbox"
+              onClick={() => setActiveSection("Estadísticas Básicas")}
+              className={`text-left px-4 py-2 rounded ${
+                activeSection === "Estadísticas Básicas"
                   ? "bg-green-500 text-white"
                   : "hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
             >
-              Inbox
-              <span className="absolute right-2 top-2 w-2 h-2 bg-red-500 rounded-full"></span>
+              Estadísticas Básicas
             </button>
             <button
               onClick={() => setActiveSection("Settings")}
