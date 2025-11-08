@@ -154,7 +154,10 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
 
       case "Settings":
         return (
-          <div className="space-y-6">
+          <div 
+            className="rounded-lg p-8 shadow"
+            style={{ backgroundColor: "var(--card-bg)" }}
+          >
             <SettingsView />
           </div>
         );
