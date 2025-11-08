@@ -1,7 +1,7 @@
 "use client";
 
-import { signInAction } from "@/app/_lib/actions";
 import { useState } from "react";
+import { signInAction } from "../_lib/actions";
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
@@ -18,48 +18,105 @@ export default function LoginForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col bg-white dark:bg-slate-900 p-8 rounded-xl shadow-lg w-full max-w-md border border-slate-200 dark:border-slate-700"
+    <div
+      className="w-full max-w-md p-8 rounded-2xl shadow-2xl transition-colors"
+      style={{ background: "var(--card-bg)" }}
     >
-      <h1 className="text-3xl font-bold text-center text-slate-900 dark:text-white mb-6">
-        Login
-      </h1>
+      {/* Logo */}
+      <div className="flex justify-center mb-8">
+        <div className="flex items-center gap-2">
+          <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-xl">Q</span>
+          </div>
+          <span
+            className="text-2xl font-bold"
+            style={{ color: "var(--foreground)" }}
+          >
+            QuickMart
+          </span>
+        </div>
+      </div>
 
+      {/* Título */}
+      <div className="mb-8">
+        <h1
+          className="text-3xl font-bold mb-2"
+          style={{ color: "var(--foreground)" }}
+        >
+          Log in
+        </h1>
+        <p className="text-gray-500 dark:text-gray-400">
+          Continue to QuickMart
+        </p>
+      </div>
+
+      {/* Mensaje de error */}
       {error && (
-        <div className="bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 text-center rounded-md py-2 mb-4 border border-red-300 dark:border-red-700">
+        <div className="mb-4 bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 text-center rounded-md py-2 border border-red-300 dark:border-red-700">
           {error}
         </div>
       )}
 
-      <label htmlFor="email" className="text-slate-900 dark:text-white mb-1 font-medium">
-        Email
-      </label>
-      <input
-        type="text"
-        name="email"
-        id="email"
-        className="mb-4 p-2 rounded-md bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-        placeholder="you@example.com"
-      />
+      {/* Formulario */}
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Input Email */}
+        <div>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium mb-2"
+            style={{ color: "var(--foreground)" }}
+          >
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            style={{
+              background: "var(--input-bg)",
+              borderColor: "var(--input-border)",
+              color: "var(--foreground)",
+            }}
+            placeholder="tu@email.com"
+            required
+          />
+        </div>
 
-      <label htmlFor="password" className="text-slate-900 dark:text-white mb-1 font-medium">
-        Password
-      </label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        className="mb-6 p-2 rounded-md bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-        placeholder="Your password"
-      />
+        {/* Input Password */}
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium mb-2"
+            style={{ color: "var(--foreground)" }}
+          >
+            Password
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            style={{
+              background: "var(--input-bg)",
+              borderColor: "var(--input-border)",
+              color: "var(--foreground)",
+            }}
+            placeholder="********"
+            required
+          />
+        </div>
 
-      <button
-        type="submit"
-        className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-semibold py-2 rounded-md transition-colors"
-      >
-        Login
-      </button>
-    </form>
+        {/* Botón Continue */}
+        <button
+          type="submit"
+          className="w-full py-3 rounded-lg font-semibold text-white transition-colors hover:opacity-90"
+          style={{ background: "var(--button-bg)" }}
+        >
+          Sign In
+        </button>
+      </form>
+    </div>
   );
 }
+

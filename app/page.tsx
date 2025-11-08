@@ -1,7 +1,7 @@
 import { auth } from "./_lib/auth";
 import SignInButton from "./_components/SignInButton";
 import SignOutButton from "./_components/SignOutButton";
-import SellerDashboard from "./_components/SellerDashboard";
+import SellerDashboard from "./rols/seller/pages/SellerDashboard";
 import { redirect } from "next/navigation";
 
 export default async function Home() {

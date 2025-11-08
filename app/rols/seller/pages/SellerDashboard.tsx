@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import SignOutButton from "./SignOutButton";
+import SignOutButton from "../../../_components/SignOutButton";
 
 interface Order {
   id: string;
