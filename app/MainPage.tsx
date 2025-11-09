@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import SignOutButton from "../../../_components/SignOutButton";
-import DashboardView from "../components/DashboardView";
-import InventoryView from "../components/InventoryView";
-import OrdersView from "../components/OrdersView";
-import SettingsView from "../components/SettingsView";
+import SignOutButton from "./_components/SignOutButton";
+import DashboardView from "./dashboard/seller/_components/DashboardView";
+import InventoryView from "./dashboard/seller/_components/InventoryView";
+import OrdersView from "./dashboard/seller/_components/OrdersView";
+import SettingsView from "./dashboard/seller/_components/SettingsView";
 
 interface Product {
   id: string;
