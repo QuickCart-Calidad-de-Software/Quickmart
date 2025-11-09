@@ -116,6 +116,19 @@ export default function LoginForm() {
           Sign In
         </button>
       </form>
+
+      {/* Link a registro */}
+      <div className="mt-6 text-center">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          ¿No tienes una cuenta?{" "}
+          <a
+            href="/auth/register"
+            className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 font-medium"
+          >
+            Crear Cuenta
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
