@@ -1,133 +1,80 @@
 "use client";
 
-import { useState } from "react";
-
-type ProductStatus = "Sospechosa" | "Aprobada" | "Rechazada";
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  seller: string;
-  sellerRole: "Vendedor" | "Usuario";
-  image: string;
-  status: ProductStatus;
-  reportCount: number;
-  createdAt: string;
-  images: string[];
-  stock: number;
-  specifications?: string;
-}
+import { useState, useEffect } from "react";
+import { Product, ProductFromDB, ProductStatus } from "@/app/_types/product";
 
 export default function ProductModerationView() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock data - productos con notificaciones
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: "P001",
-      name: "iPhone 15 Pro Max ORIGINAL!!!! Super barato!!!",
-      description:
-        "iPhone 15 Pro Max 512GB completamente nuevo, precio increíble solo por hoy!!! No te lo pierdas!!!",
-      price: 89.99,
-      category: "Electrónicos",
-      seller: "VendedorNuevo2024",
-      sellerRole: "Usuario",
-      image: "📱",
-      status: "Sospechosa",
-      reportCount: 5,
-      createdAt: "2024-11-08 10:30",
-      images: ["📱", "📦", "✨"],
-      stock: 50,
-      specifications: "512GB, Color Titanio Natural, Nuevo en caja sellada",
-    },
-    {
-      id: "P002",
-      name: "Producto con contenido inapropiado",
-      description:
-        "Descripción con lenguaje ofensivo y contenido que viola las políticas de la plataforma...",
-      price: 25.0,
-      category: "Varios",
-      seller: "UsuarioProblematico",
-      sellerRole: "Usuario",
-      image: "⚠️",
-      status: "Sospechosa",
-      reportCount: 8,
-      createdAt: "2024-11-08 09:15",
-      images: ["⚠️", "❌"],
-      stock: 10,
-    },
-    {
-      id: "P003",
-      name: "Laptop Dell XPS 15",
-      description:
-        "Laptop profesional Dell XPS 15, Intel Core i7 11va generación, 16GB RAM, SSD 512GB, pantalla 4K",
-      price: 1299.99,
-      category: "Electrónicos",
-      seller: "TechStore Pro",
+  // Función para convertir productos de la DB al formato del componente
+  const mapDBProductToProduct = (dbProduct: ProductFromDB): Product => {
+    return {
+      id: dbProduct.id.toString(),
+      name: dbProduct.title,
+      description: dbProduct.description || dbProduct.short_description || "Sin descripción",
+      price: Number(dbProduct.price),
+      category: `Categoría ${dbProduct.category_id || "Sin categoría"}`,
+      seller: `Vendedor ${dbProduct.seller_id.substring(0, 8)}`,
       sellerRole: "Vendedor",
-      image: "�",
-      status: "Sospechosa",
-      reportCount: 1,
-      createdAt: "2024-11-08 08:45",
-      images: ["💻", "🖥️", "⌨️"],
-      stock: 5,
-      specifications:
-        "i7-11800H, 16GB DDR4, 512GB NVMe, RTX 3050 Ti, Pantalla 15.6' 4K OLED",
-    },
-    {
-      id: "P004",
-      name: "Zapatillas Nike Air Max 2024",
-      description:
-        "Zapatillas deportivas Nike Air Max 2024, originales, talla 42, nuevas con etiquetas y caja original",
-      price: 159.99,
-      category: "Ropa y Calzado",
-      seller: "SportsShop",
-      sellerRole: "Vendedor",
-      image: "👟",
-      status: "Aprobada",
+      image: "📦",
+      status: dbProduct.active ? "Aprobada" : "Sospechosa",
       reportCount: 0,
-      createdAt: "2024-11-07 15:30",
-      images: ["👟", "📦", "✅"],
-      stock: 12,
-    },
-    {
-      id: "P005",
-      name: "Producto falsificado",
-      description: "Réplica de marca famosa vendida como original",
-      price: 15.0,
-      category: "Ropa",
-      seller: "VendedorSospechoso",
-      sellerRole: "Usuario",
-      image: "❌",
-      status: "Sospechosa",
-      reportCount: 12,
-      createdAt: "2024-11-08 07:20",
-      images: ["❌", "⚠️"],
-      stock: 100,
-    },
-    {
-      id: "P006",
-      name: "Samsung Galaxy S24 Ultra",
-      description:
-        "Samsung Galaxy S24 Ultra 256GB, color negro, nuevo sellado con garantía oficial de 1 año",
-      price: 1099.99,
-      category: "Electrónicos",
-      seller: "MobileWorld",
-      sellerRole: "Vendedor",
-      image: "📱",
-      status: "Aprobada",
-      reportCount: 0,
-      createdAt: "2024-11-06 12:00",
-      images: ["📱", "📦", "🔋"],
-      stock: 8,
-      specifications: "256GB, 12GB RAM, Snapdragon 8 Gen 3, Cámara 200MP",
-    },
-  ]);
+      createdAt: new Date().toISOString().split('T')[0],
+      images: ["📦", "📷", "✨"],
+      stock: dbProduct.stock,
+      specifications: dbProduct.description || undefined
+    };
+  };
+
+  // Fetch de productos desde la API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/products');
+        
+        if (!response.ok) {
+          throw new Error('Error al obtener los productos');
+        }
+
+        const data = await response.json();
+        const mappedProducts = data.products.map(mapDBProductToProduct);
+        setProducts(mappedProducts);
+        setError(null);
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        setError('No se pudieron cargar los productos');
+        // Mantener productos mock en caso de error para desarrollo
+        setProducts([
+          {
+            id: "P001",
+            name: "iPhone 15 Pro Max ORIGINAL!!!! Super barato!!!",
+            description: "iPhone 15 Pro Max 512GB completamente nuevo, precio increíble solo por hoy!!! No te lo pierdas!!!",
+            price: 89.99,
+            category: "Electrónicos",
+            seller: "VendedorNuevo2024",
+            sellerRole: "Usuario",
+            image: "📱",
+            status: "Sospechosa",
+            reportCount: 5,
+            createdAt: "2024-11-08 10:30",
+            images: ["📱", "📦", "✨"],
+            stock: 50,
+            specifications: "512GB, Color Titanio Natural, Nuevo en caja sellada"
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const handleApproveProduct = (productId: string) => {
     // Actualizar el estado del producto a "Aprobada"
@@ -339,8 +286,26 @@ export default function ProductModerationView() {
         </div>
       </div>
 
+      {/* Indicador de error */}
+      {error && (
+        <div className="rounded-lg p-4 border border-red-500 bg-red-50 dark:bg-red-900/20">
+          <p className="text-red-700 dark:text-red-400 text-center">
+            ⚠️ {error}
+          </p>
+        </div>
+      )}
+
+      {/* Indicador de carga */}
+      {loading && (
+        <div className="flex justify-center items-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <span className="ml-3 text-gray-600 dark:text-gray-400">Cargando productos...</span>
+        </div>
+      )}
+
       {/* Tabla de notificaciones */}
-      <div
+      {!loading && (
+        <div 
         className="rounded-lg border overflow-hidden"
         style={{
           backgroundColor: "var(--card-bg)",
@@ -493,6 +458,7 @@ export default function ProductModerationView() {
           </table>
         </div>
       </div>
+      )}
 
       {/* Modal de revisión de producto */}
       {showReviewModal && selectedProduct && (
