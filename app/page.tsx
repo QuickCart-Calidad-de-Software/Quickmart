@@ -18,7 +18,7 @@ export default async function Home() {
       break;
 
     case "usuario":
-      redirect("/dashboard/admin");
+      redirect("/dashboard/user");
       break;
 
     default:
