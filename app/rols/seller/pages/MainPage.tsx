@@ -138,7 +138,6 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
         );
 
       case "Pedidos":
-      case "Pedidos":
         return (
           <div className="space-y-6">
             <OrdersView searchQuery={searchQuery} />
