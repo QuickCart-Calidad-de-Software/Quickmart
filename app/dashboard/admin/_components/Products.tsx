@@ -27,7 +27,12 @@ export default function ProductModerationView() {
       createdAt: new Date().toISOString().split('T')[0],
       images: ["📦", "📷", "✨"],
       stock: dbProduct.stock,
-      specifications: dbProduct.description || undefined
+      specifications: dbProduct.description || undefined,
+      rating: 0,
+      reviews: 0,
+      sellerId: dbProduct.seller_id,
+      sellerName: `Vendedor ${dbProduct.seller_id.substring(0, 8)}`,
+      location: "Ubicación no especificada"
     };
   };
 
@@ -65,7 +70,12 @@ export default function ProductModerationView() {
             createdAt: "2024-11-08 10:30",
             images: ["📱", "📦", "✨"],
             stock: 50,
-            specifications: "512GB, Color Titanio Natural, Nuevo en caja sellada"
+            specifications: "512GB, Color Titanio Natural, Nuevo en caja sellada",
+            rating: 0,
+            reviews: 0,
+            sellerId: "seller-001",
+            sellerName: "VendedorNuevo2024",
+            location: "Ciudad de México"
           }
         ]);
       } finally {
@@ -115,7 +125,7 @@ export default function ProductModerationView() {
   const filteredProducts = products.filter(
     (product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.seller.toLowerCase().includes(searchTerm.toLowerCase())
+      (product.seller && product.seller.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   // Estadísticas
@@ -411,10 +421,10 @@ export default function ProductModerationView() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      {getStatusBadge(product.status)}
+                      {product.status && getStatusBadge(product.status)}
                     </td>
                     <td className="px-6 py-4">
-                      {product.reportCount > 0 ? (
+                      {product.reportCount !== undefined && product.reportCount > 0 ? (
                         <span className="px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-xs font-bold">
                           🚨 {product.reportCount}
                         </span>
@@ -514,7 +524,7 @@ export default function ProductModerationView() {
                   }}
                 >
                   <div className="grid grid-cols-3 gap-3">
-                    {selectedProduct.images.map((img, index) => (
+                    {selectedProduct.images && selectedProduct.images.map((img, index) => (
                       <div
                         key={index}
                         className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center text-4xl"
@@ -570,7 +580,7 @@ export default function ProductModerationView() {
                     <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
                       Estado:
                     </span>
-                    {getStatusBadge(selectedProduct.status)}
+                    {selectedProduct.status && getStatusBadge(selectedProduct.status)}
                   </div>
                 </div>
               </div>
@@ -580,7 +590,7 @@ export default function ProductModerationView() {
                 {/* Información del vendedor */}
                 <div
                   className={`rounded-lg p-4 border-2 ${
-                    selectedProduct.reportCount > 0
+                    selectedProduct.reportCount !== undefined && selectedProduct.reportCount > 0
                       ? "border-red-500 bg-red-50 dark:bg-red-900/20"
                       : ""
                   }`}
@@ -636,7 +646,7 @@ export default function ProductModerationView() {
                         {selectedProduct.createdAt}
                       </span>
                     </div>
-                    {selectedProduct.reportCount > 0 && (
+                    {selectedProduct.reportCount !== undefined && selectedProduct.reportCount > 0 && (
                       <div className="mt-3 pt-3 border-t border-red-300 dark:border-red-700">
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-medium text-red-600 dark:text-red-400">
