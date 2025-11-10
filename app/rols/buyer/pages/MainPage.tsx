@@ -257,44 +257,49 @@ export default function BuyerDashboard({ userName }: BuyerDashboardProps) {
 
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-950">
-      {/* Top Navigation - MINIMAL ELEGANTE */}
-      <nav className="bg-white dark:bg-neutral-950 border-b border-neutral-200 dark:border-neutral-800 sticky top-0 z-30">
+      {/* Top Navigation - Premium Apple Style */}
+      <nav className="bg-neutral-900/95 dark:bg-black/95 backdrop-blur-xl border-b border-neutral-800 dark:border-neutral-900 sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-8">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo - Minimal */}
-            <div className="flex items-center gap-4 cursor-pointer">
-              <div className="w-8 h-8 bg-neutral-900 dark:bg-white rounded-sm flex items-center justify-center">
-                <span className="text-white dark:text-neutral-900 font-light text-lg">Q</span>
+          <div className="flex items-center justify-between h-16">
+            {/* Left Spacer */}
+            <div className="w-48"></div>
+
+            {/* Logo - Centered Premium */}
+            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3 cursor-pointer group">
+              <div className="w-7 h-7 bg-white rounded-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                <span className="text-neutral-900 font-light text-base">Q</span>
               </div>
-              <span className="text-xl font-light tracking-wider text-neutral-900 dark:text-white uppercase">QuickMart</span>
+              <span className="text-lg font-light tracking-[0.3em] text-white uppercase">
+                QuickMart
+              </span>
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center gap-6">
+            {/* Actions - Right Side */}
+            <div className="flex items-center gap-5">
               {/* Notifications */}
               <NotificationsPanel />
 
-              {/* Cart - Minimal Style */}
+              {/* Cart - Premium Style */}
               <button
                 onClick={() => setCartOpen(true)}
-                className="relative p-2 hover:bg-neutral-100 dark:hover:bg-neutral-900 rounded-sm transition-all duration-300 group"
+                className="relative p-2 hover:bg-white/10 rounded-sm transition-all duration-300 group"
               >
-                <CartIcon className="w-5 h-5 text-neutral-700 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
+                <CartIcon className="w-5 h-5 text-neutral-300 group-hover:text-white transition-colors" />
                 {cart.length > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-[1.25rem] h-5 px-1.5 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-xs font-normal rounded-sm flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 min-w-[1.1rem] h-[1.1rem] px-1 bg-white text-neutral-900 text-[10px] font-normal rounded-sm flex items-center justify-center">
                     {cart.length}
                   </span>
                 )}
               </button>
 
-              {/* User Menu - Minimal Profile */}
-              <div className="flex items-center gap-4 pl-6 ml-6 border-l border-neutral-200 dark:border-neutral-800">
+              {/* User Menu - Premium Profile */}
+              <div className="flex items-center gap-3 pl-5 ml-5 border-l border-neutral-700 dark:border-neutral-800">
                 <div className="text-right hidden sm:block">
-                  <div className="text-sm font-normal text-neutral-900 dark:text-white uppercase tracking-wide">{userName}</div>
-                  <div className="text-xs font-light text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Buyer</div>
+                  <div className="text-xs font-normal text-white uppercase tracking-widest">{userName}</div>
+                  <div className="text-[10px] font-light text-neutral-400 uppercase tracking-[0.2em]">Buyer</div>
                 </div>
-                <div className="w-9 h-9 bg-neutral-900 dark:bg-white rounded-sm flex items-center justify-center hover-lift">
-                  <User className="w-4 h-4 text-white dark:text-neutral-900" />
+                <div className="w-8 h-8 bg-white rounded-sm flex items-center justify-center hover:bg-neutral-200 transition-all duration-300 cursor-pointer">
+                  <User className="w-4 h-4 text-neutral-900" />
                 </div>
               </div>
             </div>
