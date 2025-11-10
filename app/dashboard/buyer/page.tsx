@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Product, CartItem, FilterOptions, Order } from '../../../_types/product';
-import { MOCK_PRODUCTS, MOCK_ORDERS, CATEGORIES } from '../data/mockData';
+import { Product, CartItem, FilterOptions, Order } from '../../_types/product';
+import { MOCK_PRODUCTS, MOCK_ORDERS, CATEGORIES } from './data/mockData';
 import {
   ShoppingCart as CartIcon,
   Package,
@@ -12,19 +12,19 @@ import {
   Home,
   Star,
 } from 'lucide-react';
-import ProductFilters from '../components/ProductFilters';
-import ProductCard from '../components/ProductCard';
-import ShoppingCart from '../components/ShoppingCart';
-import Checkout from '../components/Checkout';
-import OrderHistory from '../components/OrderHistory';
-import OrderConfirmation from '../components/OrderConfirmation';
-import ProductReviews from '../components/ProductReviews';
-import NotificationsPanel from '../components/NotificationsPanel';
-import PromoCarousel from '../components/PromoCarousel';
+import ProductFilters from './components/ProductFilters';
+import ProductCard from './components/ProductCard';
+import ShoppingCart from './components/ShoppingCart';
+import Checkout from './components/Checkout';
+import OrderHistory from './components/OrderHistory';
+import OrderConfirmation from './components/OrderConfirmation';
+import ProductReviews from './components/ProductReviews';
+import NotificationsPanel from './components/NotificationsPanel';
+import PromoCarousel from './components/PromoCarousel';
 import {
   getCartFromLocalStorage,
   saveCartToLocalStorage,
-} from '../../../_utils/cartUtils';
+} from '../../_utils/cartUtils';
 
 type View = 'home' | 'cart' | 'checkout' | 'orders' | 'confirmation' | 'reviews';
 
@@ -348,7 +348,7 @@ export default function BuyerDashboard({ userName }: BuyerDashboardProps) {
 
             <div className="pt-6 mt-6 border-t border-neutral-200">
               <button
-                onClick={() => window.location.href = '/'}
+                onClick={() => window.location.href = '/login'}
                 className="w-full flex items-center gap-4 px-4 py-3 rounded-sm transition-all duration-300 font-normal uppercase tracking-wider text-sm text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"
               >
                 <LogOut className="w-4 h-4" />
