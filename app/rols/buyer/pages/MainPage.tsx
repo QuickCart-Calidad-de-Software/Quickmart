@@ -171,10 +171,10 @@ export default function BuyerDashboard({ userName }: BuyerDashboardProps) {
 
             {/* Welcome Section - Minimal */}
             <div className="pt-12">
-              <h1 className="text-5xl font-light text-neutral-900 dark:text-white tracking-tight uppercase mb-4">
+              <h1 className="text-5xl font-light text-neutral-900 tracking-tight uppercase mb-4">
                 Welcome, {userName}
               </h1>
-              <p className="text-neutral-500 dark:text-neutral-400 text-lg font-light tracking-wide">
+              <p className="text-neutral-500 text-lg font-light tracking-wide">
                 Discover our collection
               </p>
             </div>
@@ -188,21 +188,21 @@ export default function BuyerDashboard({ userName }: BuyerDashboardProps) {
             {/* Products Grid - Minimal Layout */}
             <div>
               <div className="flex items-center justify-between mb-12">
-                <h2 className="text-2xl font-light text-neutral-900 dark:text-white tracking-wider uppercase">
+                <h2 className="text-2xl font-light text-neutral-900 tracking-wider uppercase">
                   Products
                 </h2>
-                <span className="badge bg-neutral-100 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 uppercase tracking-widest text-xs">
+                <span className="badge bg-neutral-100 text-neutral-700 uppercase tracking-widest text-xs">
                   {filteredProducts.length} Items
                 </span>
               </div>
 
               {filteredProducts.length === 0 ? (
                 <div className="card p-16 text-center fade-in">
-                  <Package className="w-12 h-12 text-neutral-300 dark:text-neutral-700 mx-auto mb-6" />
-                  <h3 className="text-lg font-light text-neutral-900 dark:text-white mb-3 uppercase tracking-wide">
+                  <Package className="w-12 h-12 text-neutral-300 mx-auto mb-6" />
+                  <h3 className="text-lg font-light text-neutral-900 mb-3 uppercase tracking-wide">
                     No products found
                   </h3>
-                  <p className="text-neutral-500 dark:text-neutral-400 font-light">
+                  <p className="text-neutral-500 font-light">
                     Try adjusting your filters
                   </p>
                 </div>
@@ -256,9 +256,9 @@ export default function BuyerDashboard({ userName }: BuyerDashboardProps) {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-neutral-950">
+    <div className="min-h-screen bg-neutral-50">
       {/* Top Navigation - Premium Apple Style */}
-      <nav className="bg-neutral-900/95 dark:bg-black/95 backdrop-blur-xl border-b border-neutral-800 dark:border-neutral-900 sticky top-0 z-30 shadow-sm">
+      <nav className="bg-neutral-900/95 backdrop-blur-xl border-b border-neutral-800 sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-8">
           <div className="flex items-center justify-between h-16">
             {/* Left Spacer */}
@@ -309,14 +309,14 @@ export default function BuyerDashboard({ userName }: BuyerDashboardProps) {
 
       {/* Side Navigation - Minimal Sidebar */}
       <div className="flex">
-        <aside className="w-64 bg-white dark:bg-neutral-950 border-r border-neutral-200 dark:border-neutral-800 min-h-[calc(100vh-5rem)] sticky top-20 hidden lg:block">
+        <aside className="w-64 bg-white border-r border-neutral-200 min-h-[calc(100vh-5rem)] sticky top-20 hidden lg:block">
           <nav className="p-6 space-y-2">
             <button
               onClick={() => setCurrentView('home')}
               className={`w-full flex items-center gap-4 px-4 py-3 rounded-sm transition-all duration-300 font-normal uppercase tracking-wider text-sm ${
                 currentView === 'home'
-                  ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
-                  : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-900 dark:hover:text-white'
+                  ? 'bg-neutral-900 text-white'
+                  : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
               }`}
             >
               <Home className="w-4 h-4" />
@@ -327,29 +327,29 @@ export default function BuyerDashboard({ userName }: BuyerDashboardProps) {
               onClick={() => setCurrentView('orders')}
               className={`w-full flex items-center gap-4 px-4 py-3 rounded-sm transition-all duration-300 font-normal uppercase tracking-wider text-sm ${
                 currentView === 'orders'
-                  ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900'
-                  : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-900 dark:hover:text-white'
+                  ? 'bg-neutral-900 text-white'
+                  : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
               }`}
             >
               <Package className="w-4 h-4" />
               Orders
               {orders.some((o) => o.status === 'enviado') && (
-                <span className="ml-auto w-1.5 h-1.5 bg-neutral-900 dark:bg-white rounded-full" />
+                <span className="ml-auto w-1.5 h-1.5 bg-neutral-900 rounded-full" />
               )}
             </button>
 
             <button
               onClick={() => alert('Función de valoraciones próximamente')}
-              className="w-full flex items-center gap-4 px-4 py-3 rounded-sm transition-all duration-300 font-normal uppercase tracking-wider text-sm text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-900 dark:hover:text-white"
+              className="w-full flex items-center gap-4 px-4 py-3 rounded-sm transition-all duration-300 font-normal uppercase tracking-wider text-sm text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
             >
               <Star className="w-4 h-4" />
               Reviews
             </button>
 
-            <div className="pt-6 mt-6 border-t border-neutral-200 dark:border-neutral-800">
+            <div className="pt-6 mt-6 border-t border-neutral-200">
               <button
                 onClick={() => window.location.href = '/'}
-                className="w-full flex items-center gap-4 px-4 py-3 rounded-sm transition-all duration-300 font-normal uppercase tracking-wider text-sm text-neutral-500 dark:text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-900 dark:hover:text-white"
+                className="w-full flex items-center gap-4 px-4 py-3 rounded-sm transition-all duration-300 font-normal uppercase tracking-wider text-sm text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"
               >
                 <LogOut className="w-4 h-4" />
                 Sign Out

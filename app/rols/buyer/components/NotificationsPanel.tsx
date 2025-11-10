@@ -62,11 +62,11 @@ export default function NotificationsPanel() {
   const getIcon = (type: Notification['type']) => {
     switch (type) {
       case 'order':
-        return <Package className="w-4 h-4 text-neutral-700 dark:text-neutral-300" />;
+        return <Package className="w-4 h-4 text-neutral-700" />;
       case 'shipping':
-        return <Truck className="w-4 h-4 text-neutral-700 dark:text-neutral-300" />;
+        return <Truck className="w-4 h-4 text-neutral-700" />;
       case 'delivery':
-        return <CheckCircle className="w-4 h-4 text-neutral-900 dark:text-white" />;
+        return <CheckCircle className="w-4 h-4 text-neutral-900" />;
     }
   };
 
@@ -88,21 +88,30 @@ export default function NotificationsPanel() {
       {/* Dropdown Panel */}
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop - MÁS OSCURO Y MÁS BLUR */}
           <div
-            className="fixed inset-0 z-30 bg-black/10 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/50 backdrop-blur-lg z-[9998] transition-all duration-500"
             onClick={() => setIsOpen(false)}
+            style={{ 
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              width: '100vw',
+              height: '100vh'
+            }}
           />
 
-          {/* Panel - Minimal Elegant */}
-          <div className="absolute right-0 top-full mt-3 w-96 bg-white dark:bg-neutral-950 rounded-sm shadow-2xl border border-neutral-200 dark:border-neutral-800 z-40 overflow-hidden">
+          {/* Panel - Justo debajo del botón */}
+          <div className="absolute right-0 top-full mt-3 w-96 bg-white rounded-sm shadow-2xl border border-neutral-200 z-[9999] overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-800">
+            <div className="flex items-center justify-between p-6 border-b border-neutral-200">
               <div>
-                <h3 className="font-light text-neutral-900 dark:text-white uppercase tracking-wider text-sm">
+                <h3 className="font-light text-neutral-900 uppercase tracking-wider text-sm">
                   Notifications
                 </h3>
-                <p className="text-xs text-neutral-500 dark:text-neutral-400 font-light mt-1 uppercase tracking-widest">
+                <p className="text-xs text-neutral-500 font-light mt-1 uppercase tracking-widest">
                   {unreadCount > 0
                     ? `${unreadCount} Unread`
                     : 'All Clear'}
@@ -111,7 +120,7 @@ export default function NotificationsPanel() {
               {unreadCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="text-xs text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white font-normal uppercase tracking-wider transition-colors"
+                  className="text-xs text-neutral-700 hover:text-neutral-900 font-normal uppercase tracking-wider transition-colors"
                 >
                   Mark All
                 </button>
@@ -122,38 +131,38 @@ export default function NotificationsPanel() {
             <div className="max-h-[420px] overflow-y-auto">
               {notifications.length === 0 ? (
                 <div className="p-16 text-center">
-                  <Bell className="w-10 h-10 text-neutral-300 dark:text-neutral-700 mx-auto mb-6" />
-                  <p className="text-neutral-500 dark:text-neutral-400 font-light text-sm uppercase tracking-wide">
+                  <Bell className="w-10 h-10 text-neutral-300 mx-auto mb-6" />
+                  <p className="text-neutral-500 font-light text-sm uppercase tracking-wide">
                     No notifications
                   </p>
                 </div>
               ) : (
-                <div className="divide-y divide-neutral-100 dark:divide-neutral-900">
+                <div className="divide-y divide-neutral-100">
                   {notifications.map((notification) => (
                     <div
                       key={notification.id}
                       onClick={() => markAsRead(notification.id)}
-                      className={`p-6 hover:bg-neutral-50 dark:hover:bg-neutral-900/50 transition-all duration-300 cursor-pointer ${
-                        !notification.read ? 'bg-neutral-50 dark:bg-neutral-900/30' : ''
+                      className={`p-6 hover:bg-neutral-50 transition-all duration-300 cursor-pointer ${
+                        !notification.read ? 'bg-neutral-50' : ''
                       }`}
                     >
                       <div className="flex gap-4">
-                        <div className="flex-shrink-0 w-8 h-8 rounded-sm bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-sm bg-neutral-100 flex items-center justify-center">
                           {getIcon(notification.type)}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between mb-2">
-                            <h4 className="font-normal text-neutral-900 dark:text-white text-sm uppercase tracking-wide">
+                            <h4 className="font-normal text-neutral-900 text-sm uppercase tracking-wide">
                               {notification.title}
                             </h4>
                             {!notification.read && (
-                              <span className="w-1.5 h-1.5 bg-neutral-900 dark:bg-white rounded-full flex-shrink-0 mt-1.5" />
+                              <span className="w-1.5 h-1.5 bg-neutral-900 rounded-full flex-shrink-0 mt-1.5" />
                             )}
                           </div>
-                          <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-2 font-light leading-relaxed">
+                          <p className="text-sm text-neutral-600 mb-2 font-light leading-relaxed">
                             {notification.message}
                           </p>
-                          <p className="text-xs text-neutral-400 dark:text-neutral-500 font-light uppercase tracking-widest">
+                          <p className="text-xs text-neutral-400 font-light uppercase tracking-widest">
                             {notification.time}
                           </p>
                         </div>
@@ -166,8 +175,8 @@ export default function NotificationsPanel() {
 
             {/* Footer */}
             {notifications.length > 0 && (
-              <div className="p-4 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/30">
-                <button className="w-full text-center text-xs text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white font-normal py-2 uppercase tracking-widest transition-colors">
+              <div className="p-4 border-t border-neutral-200 bg-neutral-50">
+                <button className="w-full text-center text-xs text-neutral-700 hover:text-neutral-900 font-normal py-2 uppercase tracking-widest transition-colors">
                   View All
                 </button>
               </div>
