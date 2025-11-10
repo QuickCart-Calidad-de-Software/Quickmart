@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 // Interfaz que representa los productos tal como vienen de la base de datos de Supabase
 export interface ProductFromDB {
   id: number;
@@ -13,19 +11,19 @@ export interface ProductFromDB {
   active: boolean;
   rating: number | null;
   rating_count: number | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 // Tipos y modelos para el frontend
 export type ProductStatus = "Sospechosa" | "Aprobada" | "Rechazada";
 
->>>>>>> b0c0aea04c785ae096ffde5dc072f626c1cf9c23
 export interface Product {
   id: string;
   name: string;
   description: string;
   price: number;
   category: string;
-<<<<<<< HEAD
   image: string;
   stock: number;
   rating: number;
@@ -34,6 +32,13 @@ export interface Product {
   sellerName: string;
   location: string;
   distance?: number;
+  seller?: string;
+  sellerRole?: "Vendedor" | "Usuario";
+  status?: ProductStatus;
+  reportCount?: number;
+  createdAt?: string;
+  images?: string[];
+  specifications?: string;
 }
 
 export interface ProductReview {
@@ -74,15 +79,32 @@ export interface FilterOptions {
   location: string;
   maxDistance: number;
   sortBy: 'price-asc' | 'price-desc' | 'rating' | 'distance' | 'name';
-=======
-  seller: string;
-  sellerRole: "Vendedor" | "Usuario";
-  image: string;
-  status: ProductStatus;
-  reportCount: number;
-  createdAt: string;
-  images: string[];
+}
+
+// Seller specific types
+export interface SellerProduct {
+  id?: string;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
   stock: number;
-  specifications?: string;
->>>>>>> b0c0aea04c785ae096ffde5dc072f626c1cf9c23
+  image?: string;
+  images?: string[];
+  active?: boolean;
+}
+
+export interface SellerProfile {
+  id: string;
+  name: string;
+  location: string;
+  email?: string;
+  phone?: string;
+  businessName?: string;
+  description?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
+  country?: string;
 }
