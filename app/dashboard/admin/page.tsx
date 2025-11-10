@@ -34,7 +34,6 @@ export default function AdminDashboardPage() {
       document.documentElement.classList.remove("dark");
     }
 
-    // Obtener nombre del usuario desde localStorage o sesión
     const userName = localStorage.getItem("userName") || "Admin";
     setName(userName);
   }, []);
@@ -88,30 +87,15 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ backgroundColor: "var(--background)" }}
-    >
-      {/* Header */}
-      <header className="border-b border-[var(--border-color)] bg-[var(--card-bg)] px-8 py-4">
+    <div className="min-h-screen bg-[#1a1a1a] dark:bg-black">
+      {/* Header - Estilo minimalista */}
+      <header className="bg-[#1a1a1a] dark:bg-black border-b border-neutral-800 px-8 py-6">
         <div className="flex items-center justify-between">
           {/* Logo + Title */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">Q</span>
-            </div>
-            <h1 className="text-2xl font-bold text-[var(--foreground)]">
-              QuickMart {role}
-            </h1>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <button
-              className="relative p-2 rounded-lg hover:opacity-80"
-              aria-label="Notifications"
-            >
+          <div className="flex items-center gap-4">
+            <button className="text-white hover:bg-neutral-800 p-2 rounded-lg transition-colors">
               <svg
-                className="w-6 h-6 text-[var(--foreground)]"
+                className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -120,26 +104,30 @@ export default function AdminDashboardPage() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 />
               </svg>
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
             </button>
+            <h1 className="text-xl font-light text-white uppercase tracking-[0.2em]">
+              QUICKMART
+            </h1>
+          </div>
 
-            <div className="flex items-center gap-3">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3 border-l border-neutral-800 pl-6">
               <div className="text-right">
-                <p className="text-sm font-medium text-[var(--foreground)]">
-                  {name}
-                </p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
+                <p className="text-sm font-light text-white uppercase tracking-wider">
                   {role}
                 </p>
+                <p className="text-xs text-neutral-400 font-light">
+                  {name}
+                </p>
               </div>
-              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-sm">
+              <button className="w-10 h-10 bg-white text-black rounded-sm flex items-center justify-center hover:bg-neutral-200 transition-colors">
+                <span className="font-medium text-sm">
                   {name.charAt(0).toUpperCase()}
                 </span>
-              </div>
+              </button>
             </div>
 
             <SignOutButton />
@@ -148,27 +136,17 @@ export default function AdminDashboardPage() {
       </header>
 
       <div className="flex">
-        {/* Sidebar */}
-        <aside
-          style={{
-            backgroundColor: "var(--card-bg)",
-            borderColor: "var(--border-color)",
-          }}
-          className="w-64 border-r min-h-[calc(100vh-73px)] p-6 flex flex-col"
-        >
-          <nav className="flex flex-col gap-2 flex-1">
-
+        {/* Sidebar - Estilo minimalista */}
+        <aside className="w-64 bg-[#1a1a1a] dark:bg-black border-r border-neutral-800 min-h-[calc(100vh-73px)] p-6 flex flex-col">
+          <nav className="flex flex-col gap-1 flex-1">
             {/* Usuarios */}
             <button
               onClick={() => setActiveSection("Usuarios")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-sm text-left transition-all font-light text-sm uppercase tracking-wider ${
                 activeSection === "Usuarios"
-                  ? "bg-blue-600 text-white"
-                  : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                  ? "bg-white text-black"
+                  : "text-neutral-400 hover:text-white hover:bg-neutral-900"
               }`}
-              style={
-                activeSection !== "Usuarios" ? { color: "var(--foreground)" } : {}
-              }
             >
               <svg
                 className="w-5 h-5"
@@ -189,16 +167,11 @@ export default function AdminDashboardPage() {
             {/* Productos */}
             <button
               onClick={() => setActiveSection("Productos")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-sm text-left transition-all font-light text-sm uppercase tracking-wider ${
                 activeSection === "Productos"
-                  ? "bg-blue-600 text-white"
-                  : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                  ? "bg-white text-black"
+                  : "text-neutral-400 hover:text-white hover:bg-neutral-900"
               }`}
-              style={
-                activeSection !== "Productos"
-                  ? { color: "var(--foreground)" }
-                  : {}
-              }
             >
               <svg
                 className="w-5 h-5"
@@ -219,14 +192,11 @@ export default function AdminDashboardPage() {
             {/* Reportes */}
             <button
               onClick={() => setActiveSection("Reportes")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-sm text-left transition-all font-light text-sm uppercase tracking-wider ${
                 activeSection === "Reportes"
-                  ? "bg-blue-600 text-white"
-                  : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                  ? "bg-white text-black"
+                  : "text-neutral-400 hover:text-white hover:bg-neutral-900"
               }`}
-              style={
-                activeSection !== "Reportes" ? { color: "var(--foreground)" } : {}
-              }
             >
               <svg
                 className="w-5 h-5"
@@ -245,58 +215,10 @@ export default function AdminDashboardPage() {
             </button>
           </nav>
 
-          {/* Botón de tema en la parte inferior */}
-          <div
-            className="mt-auto pt-6"
-            style={{
-              borderColor: "var(--border-color)",
-              borderTopWidth: "1px",
-            }}
-          >
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:opacity-80 transition-all"
-              style={{ backgroundColor: "var(--input-bg)" }}
-              aria-label="Toggle theme"
-            >
-              <span
-                className="text-sm font-medium"
-                style={{ color: "var(--foreground)" }}
-              >
-                {isDark ? "Modo Claro" : "Modo Oscuro"}
-              </span>
-              {isDark ? (
-                <svg
-                  className="w-5 h-5 text-yellow-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="w-5 h-5"
-                  style={{ color: "var(--foreground)" }}
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                </svg>
-              )}
-            </button>
-          </div>
         </aside>
 
         {/* Main Content */}
-        <main
-          className="flex-1 p-8"
-          style={{ backgroundColor: "var(--background)" }}
-        >
+        <main className="flex-1 p-8 bg-white dark:bg-neutral-900">
           {renderMainContent()}
         </main>
       </div>
