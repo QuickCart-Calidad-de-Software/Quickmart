@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Area,
   AreaChart,
@@ -10,6 +10,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import ReportPDF from "./ReportPDF";
 
 type ReportType = "sales" | "users" | "products" | "revenue";
 type Period = "day" | "week" | "month" | "year";
@@ -37,6 +38,7 @@ export default function ReportView() {
   const [endDate, setEndDate] = useState("2024-11-08");
   const [isGenerating, setIsGenerating] = useState(false);
   const [reportGenerated, setReportGenerated] = useState(true); // Default to true to show preview
+  const pdfLinkRef = useRef<HTMLDivElement>(null);
 
   // Mock data for sales
   const salesDataByPeriod: Record<Period, SalesData[]> = {
@@ -115,6 +117,16 @@ export default function ReportView() {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsGenerating(false);
     setReportGenerated(true);
+
+    // Trigger PDF download after report is generated
+    setTimeout(() => {
+      if (pdfLinkRef.current) {
+        const link = pdfLinkRef.current.querySelector("a");
+        if (link) {
+          link.click();
+        }
+      }
+    }, 100);
   };
 
   const handleExportReport = (format: "pdf" | "excel" | "csv") => {
@@ -171,6 +183,19 @@ export default function ReportView() {
             Genera y visualiza reportes detallados del sistema
           </p>
         </div>
+        {/* Botón de descarga PDF - Oculto pero funcional */}
+        {reportGenerated && (
+          <div ref={pdfLinkRef} style={{ display: "none" }}>
+            <ReportPDF
+              reportType={reportType}
+              period={period}
+              startDate={startDate}
+              endDate={endDate}
+              salesData={currentSalesData}
+              usersData={currentUsersData}
+            />
+          </div>
+        )}
       </div>
 
       {/* Configuration Panel */}
@@ -325,7 +350,7 @@ export default function ReportView() {
             <button
               onClick={handleGenerateReport}
               disabled={isGenerating}
-              className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isGenerating ? (
                 <>
@@ -346,10 +371,10 @@ export default function ReportView() {
                     <path
                       className="opacity-75"
                       fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      d="M4 12a8 8 0 008-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     ></path>
                   </svg>
-                  Generando...
+                  Generando PDF...
                 </>
               ) : (
                 <>
@@ -363,10 +388,10 @@ export default function ReportView() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
                     />
                   </svg>
-                  Generar Reporte
+                  Generar Reporte PDF
                 </>
               )}
             </button>

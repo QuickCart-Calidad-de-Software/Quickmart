@@ -25,7 +25,10 @@ export default function LoginForm() {
           <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
             <span className="text-white font-bold text-2xl">Q</span>
           </div>
-          <span className="text-3xl font-black text-gradient">
+          <span 
+            className="text-3xl font-black"
+            style={{ color: "var(--foreground)" }}
+          >
             QuickMart
           </span>
         </div>
@@ -33,10 +36,16 @@ export default function LoginForm() {
 
       {/* Título - Modern Typography */}
       <div className="mb-8 text-center">
-        <h1 className="text-4xl font-black text-slate-900 dark:text-slate-50 mb-3 tracking-tight">
+        <h1 
+          className="text-4xl font-black mb-3 tracking-tight"
+          style={{ color: "var(--foreground)" }}
+        >
           Bienvenido de nuevo
         </h1>
-        <p className="text-slate-600 dark:text-slate-400 text-lg">
+        <p 
+          className="text-lg"
+          style={{ color: "var(--muted-foreground)" }}
+        >
           Ingresa a tu cuenta QuickMart
         </p>
       </div>
@@ -54,7 +63,8 @@ export default function LoginForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-bold mb-2 text-slate-900 dark:text-slate-50"
+            className="block text-sm font-bold mb-2"
+            style={{ color: "var(--foreground)" }}
           >
             Correo Electrónico
           </label>
@@ -62,7 +72,12 @@ export default function LoginForm() {
             id="email"
             name="email"
             type="email"
-            className="input-modern w-full"
+            className="w-full px-4 py-3 rounded-xl border-2 focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200"
+            style={{
+              backgroundColor: "var(--input-bg)",
+              borderColor: "var(--input-border)",
+              color: "var(--foreground)",
+            }}
             placeholder="tu@email.com"
             required
           />
@@ -72,7 +87,8 @@ export default function LoginForm() {
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-bold mb-2 text-slate-900 dark:text-slate-50"
+            className="block text-sm font-bold mb-2"
+            style={{ color: "var(--foreground)" }}
           >
             Contraseña
           </label>
@@ -80,7 +96,12 @@ export default function LoginForm() {
             id="password"
             name="password"
             type="password"
-            className="input-modern w-full"
+            className="w-full px-4 py-3 rounded-xl border-2 focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200"
+            style={{
+              backgroundColor: "var(--input-bg)",
+              borderColor: "var(--input-border)",
+              color: "var(--foreground)",
+            }}
             placeholder="••••••••"
             required
           />
@@ -89,7 +110,7 @@ export default function LoginForm() {
         {/* Botón Sign In - Modern Gradient */}
         <button
           type="submit"
-          className="btn-primary w-full py-4 text-lg mt-2"
+          className="w-full py-4 text-lg mt-2 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white rounded-xl font-bold transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/50 hover:scale-105"
         >
           Iniciar Sesión
         </button>
@@ -100,30 +121,23 @@ export default function LoginForm() {
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t-2 border-slate-200 dark:border-slate-700"></div>
         </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="px-4 glass text-slate-600 dark:text-slate-400 font-semibold">
-            o continúa con
-          </span>
-        </div>
       </div>
 
       {/* Botón de Registro - Modern Style */}
       <a
         href="/auth/register"
-        className="btn-secondary w-full py-4 text-center block hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400"
+        className="w-full py-4 text-center block rounded-xl border-2 hover:border-indigo-500 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+        style={{
+          backgroundColor: "var(--card-bg)",
+          borderColor: "var(--border-color)",
+          color: "var(--foreground)",
+        }}
       >
         <span className="flex items-center justify-center gap-2">
           <span className="text-2xl">✨</span>
           <span className="font-bold">Crear Cuenta Nueva</span>
         </span>
       </a>
-
-      {/* Texto adicional - Modern Typography */}
-      <div className="mt-6 text-center">
-        <p className="text-sm text-slate-500 dark:text-slate-400">
-          ¿Primera vez aquí? <span className="font-bold text-indigo-600 dark:text-indigo-400">Regístrate gratis</span>
-        </p>
-      </div>
     </div>
   );
 }

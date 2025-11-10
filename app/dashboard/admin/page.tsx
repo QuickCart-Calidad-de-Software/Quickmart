@@ -54,22 +54,6 @@ export default function AdminDashboardPage() {
 
   const renderMainContent = () => {
     switch (activeSection) {
-      case "Dashboard":
-        return (
-          <div className="text-center py-20">
-            <div className="text-6xl mb-4">📊</div>
-            <h2
-              className="text-2xl font-bold mb-2"
-              style={{ color: "var(--foreground)" }}
-            >
-              Dashboard Principal
-            </h2>
-            <p className="text-gray-500 dark:text-gray-400">
-              Selecciona una sección del menú lateral
-            </p>
-          </div>
-        );
-
       case "Usuarios":
         return (
           <div className="space-y-6">
@@ -173,35 +157,6 @@ export default function AdminDashboardPage() {
           className="w-64 border-r min-h-[calc(100vh-73px)] p-6 flex flex-col"
         >
           <nav className="flex flex-col gap-2 flex-1">
-            {/* Dashboard */}
-            <button
-              onClick={() => setActiveSection("Dashboard")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
-                activeSection === "Dashboard"
-                  ? "bg-blue-600 text-white"
-                  : "hover:bg-gray-50 dark:hover:bg-gray-700"
-              }`}
-              style={
-                activeSection !== "Dashboard"
-                  ? { color: "var(--foreground)" }
-                  : {}
-              }
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                />
-              </svg>
-              Dashboard
-            </button>
 
             {/* Usuarios */}
             <button
