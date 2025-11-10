@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 "use client";
 
 import { useState } from "react";
@@ -198,3 +199,5 @@ export default function RegisterForm() {
     </div>
   );
 }
+=======
+>>>>>>> b0c0aea04c785ae096ffde5dc072f626c1cf9c23

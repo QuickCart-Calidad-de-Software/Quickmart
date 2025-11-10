@@ -94,6 +94,7 @@ export default function LoginForm() {
           Iniciar Sesión
         </button>
       </form>
+<<<<<<< HEAD
 
       {/* Separador - Modern Line */}
       <div className="relative my-8">
@@ -124,6 +125,8 @@ export default function LoginForm() {
           ¿Primera vez aquí? <span className="font-bold text-indigo-600 dark:text-indigo-400">Regístrate gratis</span>
         </p>
       </div>
+=======
+>>>>>>> b0c0aea04c785ae096ffde5dc072f626c1cf9c23
     </div>
   );
 }
