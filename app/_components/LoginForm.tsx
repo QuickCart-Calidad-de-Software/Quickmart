@@ -18,115 +18,110 @@ export default function LoginForm() {
   };
 
   return (
-    <div
-      className="w-full max-w-md p-8 rounded-2xl shadow-2xl transition-colors"
-      style={{ background: "var(--card-bg)" }}
-    >
-      {/* Logo */}
-      <div className="flex justify-center mb-8">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xl">Q</span>
+    <div className="w-full max-w-md glass p-10 rounded-3xl shadow-2xl fade-in">
+      {/* Logo - Modern Gradient */}
+      <div className="flex justify-center mb-10">
+        <div className="flex items-center gap-3 hover-lift cursor-pointer">
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30">
+            <span className="text-white font-bold text-2xl">Q</span>
           </div>
-          <span
-            className="text-2xl font-bold"
-            style={{ color: "var(--foreground)" }}
-          >
+          <span className="text-3xl font-black text-gradient">
             QuickMart
           </span>
         </div>
       </div>
 
-      {/* Título */}
-      <div className="mb-8">
-        <h1
-          className="text-3xl font-bold mb-2"
-          style={{ color: "var(--foreground)" }}
-        >
-          Log in
+      {/* Título - Modern Typography */}
+      <div className="mb-8 text-center">
+        <h1 className="text-4xl font-black text-slate-900 dark:text-slate-50 mb-3 tracking-tight">
+          Bienvenido de nuevo
         </h1>
-        <p className="text-gray-500 dark:text-gray-400">
-          Continue to QuickMart
+        <p className="text-slate-600 dark:text-slate-400 text-lg">
+          Ingresa a tu cuenta QuickMart
         </p>
       </div>
 
-      {/* Mensaje de error */}
+      {/* Mensaje de error - Modern Alert */}
       {error && (
-        <div className="mb-4 bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 text-center rounded-md py-2 border border-red-300 dark:border-red-700">
+        <div className="mb-6 bg-gradient-to-r from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20 text-rose-700 dark:text-rose-400 text-center rounded-xl py-3 px-4 border border-rose-200 dark:border-rose-800 font-medium">
           {error}
         </div>
       )}
 
       {/* Formulario */}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Input Email */}
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Input Email - Modern Style */}
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium mb-2"
-            style={{ color: "var(--foreground)" }}
+            className="block text-sm font-bold mb-2 text-slate-900 dark:text-slate-50"
           >
-            Email
+            Correo Electrónico
           </label>
           <input
             id="email"
             name="email"
             type="email"
-            className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            style={{
-              background: "var(--input-bg)",
-              borderColor: "var(--input-border)",
-              color: "var(--foreground)",
-            }}
+            className="input-modern w-full"
             placeholder="tu@email.com"
             required
           />
         </div>
 
-        {/* Input Password */}
+        {/* Input Password - Modern Style */}
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-medium mb-2"
-            style={{ color: "var(--foreground)" }}
+            className="block text-sm font-bold mb-2 text-slate-900 dark:text-slate-50"
           >
-            Password
+            Contraseña
           </label>
           <input
             id="password"
             name="password"
             type="password"
-            className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            style={{
-              background: "var(--input-bg)",
-              borderColor: "var(--input-border)",
-              color: "var(--foreground)",
-            }}
-            placeholder="********"
+            className="input-modern w-full"
+            placeholder="••••••••"
             required
           />
         </div>
 
-        {/* Botón Continue */}
+        {/* Botón Sign In - Modern Gradient */}
         <button
           type="submit"
-          className="w-full py-3 rounded-lg font-semibold text-white transition-colors hover:opacity-90"
-          style={{ background: "var(--button-bg)" }}
+          className="btn-primary w-full py-4 text-lg mt-2"
         >
-          Sign In
+          Iniciar Sesión
         </button>
       </form>
 
-      {/* Link a registro */}
+      {/* Separador - Modern Line */}
+      <div className="relative my-8">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t-2 border-slate-200 dark:border-slate-700"></div>
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="px-4 glass text-slate-600 dark:text-slate-400 font-semibold">
+            o continúa con
+          </span>
+        </div>
+      </div>
+
+      {/* Botón de Registro - Modern Style */}
+      <a
+        href="/auth/register"
+        className="btn-secondary w-full py-4 text-center block hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-400"
+      >
+        <span className="flex items-center justify-center gap-2">
+          <span className="text-2xl">✨</span>
+          <span className="font-bold">Crear Cuenta Nueva</span>
+        </span>
+      </a>
+
+      {/* Texto adicional - Modern Typography */}
       <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          ¿No tienes una cuenta?{" "}
-          <a
-            href="/auth/register"
-            className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 font-medium"
-          >
-            Crear Cuenta
-          </a>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          ¿Primera vez aquí? <span className="font-bold text-indigo-600 dark:text-indigo-400">Regístrate gratis</span>
         </p>
       </div>
     </div>

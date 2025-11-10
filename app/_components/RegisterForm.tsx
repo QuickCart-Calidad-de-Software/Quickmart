@@ -51,53 +51,43 @@ export default function RegisterForm() {
   };
 
   return (
-    <div
-      className="w-full max-w-md p-8 rounded-2xl shadow-2xl transition-colors"
-      style={{ background: "var(--card-bg)" }}
-    >
-      {/* Logo */}
+    <div className="w-full max-w-md glass p-10 rounded-3xl shadow-2xl fade-in">
+      {/* Logo - Modern Gradient */}
       <div className="flex justify-center mb-8">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-xl">Q</span>
+        <div className="flex items-center gap-3 hover-lift cursor-pointer">
+          <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 via-green-600 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30">
+            <span className="text-white font-bold text-2xl">Q</span>
           </div>
-          <span
-            className="text-2xl font-bold"
-            style={{ color: "var(--foreground)" }}
-          >
+          <span className="text-3xl font-black text-gradient">
             QuickMart
           </span>
         </div>
       </div>
 
-      {/* Título */}
-      <div className="mb-8">
-        <h1
-          className="text-3xl font-bold mb-2"
-          style={{ color: "var(--foreground)" }}
-        >
-          Crear Cuenta
+      {/* Título - Modern Typography */}
+      <div className="mb-8 text-center">
+        <h1 className="text-4xl font-black text-slate-900 dark:text-slate-50 mb-3 tracking-tight">
+          Únete a QuickMart
         </h1>
-        <p className="text-gray-500 dark:text-gray-400">
-          Únete a QuickMart hoy
+        <p className="text-slate-600 dark:text-slate-400 text-lg">
+          Crea tu cuenta y empieza a comprar
         </p>
       </div>
 
-      {/* Mensaje de error */}
+      {/* Mensaje de error - Modern Alert */}
       {error && (
-        <div className="mb-4 bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 text-center rounded-md py-2 border border-red-300 dark:border-red-700">
+        <div className="mb-6 bg-gradient-to-r from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20 text-rose-700 dark:text-rose-400 text-center rounded-xl py-3 px-4 border border-rose-200 dark:border-rose-800 font-medium">
           {error}
         </div>
       )}
 
       {/* Formulario */}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Input Email */}
+      <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Input Email - Modern Style */}
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium mb-2"
-            style={{ color: "var(--foreground)" }}
+            className="block text-sm font-bold mb-2 text-slate-900 dark:text-slate-50"
           >
             Correo Electrónico
           </label>
@@ -105,23 +95,17 @@ export default function RegisterForm() {
             id="email"
             name="email"
             type="email"
-            className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
-            style={{
-              background: "var(--input-bg)",
-              borderColor: "var(--input-border)",
-              color: "var(--foreground)",
-            }}
+            className="input-modern w-full"
             placeholder="tu@email.com"
             required
           />
         </div>
 
-        {/* Input Password */}
+        {/* Input Password - Modern Style */}
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-medium mb-2"
-            style={{ color: "var(--foreground)" }}
+            className="block text-sm font-bold mb-2 text-slate-900 dark:text-slate-50"
           >
             Contraseña
           </label>
@@ -130,27 +114,21 @@ export default function RegisterForm() {
             name="password"
             type="password"
             onChange={handlePasswordChange}
-            className="w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
-            style={{
-              background: "var(--input-bg)",
-              borderColor: "var(--input-border)",
-              color: "var(--foreground)",
-            }}
+            className="input-modern w-full"
             placeholder="Mínimo 8 caracteres"
             minLength={8}
             required
           />
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 font-medium">
             Debe tener al menos 8 caracteres
           </p>
         </div>
 
-        {/* Input Confirm Password */}
+        {/* Input Confirm Password - Modern Style */}
         <div>
           <label
             htmlFor="confirmPassword"
-            className="block text-sm font-medium mb-2"
-            style={{ color: "var(--foreground)" }}
+            className="block text-sm font-bold mb-2 text-slate-900 dark:text-slate-50"
           >
             Confirmar Contraseña
           </label>
@@ -159,65 +137,59 @@ export default function RegisterForm() {
             name="confirmPassword"
             type="password"
             onChange={handlePasswordChange}
-            className={`w-full px-4 py-3 rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
-              passwordMatch ? "focus:ring-green-500" : "focus:ring-red-500 border-red-500"
+            className={`input-modern w-full ${
+              !passwordMatch ? "!border-rose-500 !ring-rose-500/10" : ""
             }`}
-            style={{
-              background: "var(--input-bg)",
-              borderColor: passwordMatch ? "var(--input-border)" : "#ef4444",
-              color: "var(--foreground)",
-            }}
             placeholder="Repite tu contraseña"
             required
           />
           {!passwordMatch && (
-            <p className="text-xs text-red-600 dark:text-red-400 mt-1">
-              Las contraseñas no coinciden
+            <p className="text-xs text-rose-600 dark:text-rose-400 mt-2 font-semibold">
+              ⚠️ Las contraseñas no coinciden
             </p>
           )}
         </div>
 
-        {/* Términos y condiciones */}
-        <div className="flex items-start gap-2">
+        {/* Términos y condiciones - Modern Checkbox */}
+        <div className="flex items-start gap-3 card p-4">
           <input
             type="checkbox"
             id="terms"
             name="terms"
             required
-            className="mt-1 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500"
+            className="mt-1 w-5 h-5 text-emerald-600 border-slate-300 rounded-lg focus:ring-emerald-500 focus:ring-4"
           />
           <label
             htmlFor="terms"
-            className="text-sm text-gray-600 dark:text-gray-400"
+            className="text-sm text-slate-600 dark:text-slate-400"
           >
             Acepto los{" "}
-            <a href="#" className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 font-medium">
+            <a href="#" className="font-bold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 underline">
               Términos y Condiciones
             </a>{" "}
             y la{" "}
-            <a href="#" className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 font-medium">
+            <a href="#" className="font-bold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 underline">
               Política de Privacidad
             </a>
           </label>
         </div>
 
-        {/* Botón Registrar */}
+        {/* Botón Registrar - Modern Gradient */}
         <button
           type="submit"
-          className="w-full py-3 rounded-lg font-semibold text-white transition-colors hover:opacity-90"
-          style={{ background: "var(--button-bg)" }}
+          className="w-full py-4 rounded-xl font-bold text-white bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 shadow-lg shadow-emerald-500/40 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] text-lg"
         >
           Crear Cuenta
         </button>
       </form>
 
-      {/* Link a login */}
-      <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+      {/* Link a login - Modern Typography */}
+      <div className="mt-8 text-center">
+        <p className="text-sm text-slate-500 dark:text-slate-400">
           ¿Ya tienes una cuenta?{" "}
           <a
             href="/auth/login"
-            className="text-green-600 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 font-medium"
+            className="font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 underline"
           >
             Iniciar Sesión
           </a>

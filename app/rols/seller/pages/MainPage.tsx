@@ -167,56 +167,56 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "var(--background)", color: "var(--foreground)" }}>
-      {/* Header */}
-      <header style={{ backgroundColor: "var(--card-bg)", borderColor: "var(--border-color)" }} className="border-b px-8 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">Q</span>
-            </div>
-            <h1 className="text-2xl font-bold" style={{ color: "var(--foreground)" }}>QuickMart Seller</h1>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <button className="relative p-2 rounded-lg hover:opacity-80">
-              <svg className="w-6 h-6" style={{ color: "var(--foreground)" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-              <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+      {/* Modern Black Header - Apple Style */}
+      <header className="bg-black border-b border-slate-800 sticky top-0 z-50 shadow-xl">
+        <div className="px-8 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo con gradiente moderno */}
             <div className="flex items-center gap-3">
-              <div className="text-right">
-                <p className="text-sm font-medium" style={{ color: "var(--foreground)" }}>{userName}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Seller</p>
+              <div className="w-10 h-10 bg-gradient-to-br from-red-600 via-orange-600 to-yellow-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/30">
+                <span className="text-white font-bold text-xl">Q</span>
               </div>
-              <div className="w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+              <h1 className="text-2xl font-black text-white">QuickMart <span className="text-red-500">Seller</span></h1>
             </div>
+
+            <div className="flex items-center gap-6">
+              {/* Notificaciones modernas */}
+              <button className="relative p-2.5 rounded-xl hover:bg-slate-800 transition-all duration-200 group">
+                <svg className="w-6 h-6 text-slate-300 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse shadow-lg shadow-red-500/50"></span>
+              </button>
             
-            <SignOutButton />
+              {/* User Profile moderno */}
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <p className="text-sm font-bold text-white">{userName}</p>
+                  <p className="text-xs font-medium text-red-400">Vendedor Premium</p>
+                </div>
+                <div className="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-600 rounded-full flex items-center justify-center shadow-lg shadow-red-500/30">
+                  <span className="text-white font-bold">{userName.charAt(0)}</span>
+                </div>
+              </div>
+            
+              <SignOutButton />
+            </div>
           </div>
         </div>
       </header>
 
       <div className="flex">
-        {/* Sidebar */}
-        <aside 
-          style={{ 
-            backgroundColor: "var(--card-bg)", 
-            borderColor: "var(--border-color)" 
-          }} 
-          className="w-64 border-r min-h-[calc(100vh-73px)] p-6 flex flex-col"
-        >
+        {/* Modern Sidebar con gradiente sutil */}
+        <aside className="w-64 bg-gradient-to-b from-slate-900 to-slate-950 border-r border-slate-800 min-h-[calc(100vh-73px)] p-6 flex flex-col">
           <nav className="flex flex-col gap-2 flex-1">
             <button
               onClick={() => setActiveSection("Dashboard")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 font-semibold ${
                 activeSection === "Dashboard"
-                  ? "bg-green-500 text-white"
-                  : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                  ? "bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/30"
+                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
               }`}
-              style={activeSection !== "Dashboard" ? { color: "var(--foreground)" } : {}}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -225,12 +225,11 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
             </button>
             <button
               onClick={() => setActiveSection("Pedidos")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 font-semibold ${
                 activeSection === "Pedidos"
-                  ? "bg-green-500 text-white"
-                  : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                  ? "bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/30"
+                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
               }`}
-              style={activeSection !== "Pedidos" ? { color: "var(--foreground)" } : {}}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -239,12 +238,11 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
             </button>
             <button
               onClick={() => setActiveSection("Estado de Inventario")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 font-semibold ${
                 activeSection === "Estado de Inventario"
-                  ? "bg-green-500 text-white"
-                  : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                  ? "bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/30"
+                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
               }`}
-              style={activeSection !== "Estado de Inventario" ? { color: "var(--foreground)" } : {}}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -253,31 +251,29 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
             </button>
             <button
               onClick={() => setActiveSection("Settings")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 font-semibold ${
                 activeSection === "Settings"
-                  ? "bg-green-500 text-white"
-                  : "hover:bg-gray-50 dark:hover:bg-gray-700"
+                  ? "bg-gradient-to-r from-red-600 to-orange-600 text-white shadow-lg shadow-red-500/30"
+                  : "text-slate-300 hover:bg-slate-800 hover:text-white"
               }`}
-              style={activeSection !== "Settings" ? { color: "var(--foreground)" } : {}}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              Settings
+              Configuración
             </button>
           </nav>
 
-          {/* Botón de tema en la parte inferior */}
-          <div className="mt-auto pt-6" style={{ borderColor: "var(--border-color)", borderTopWidth: "1px" }}>
+          {/* Botón de tema moderno */}
+          <div className="mt-auto pt-6 border-t border-slate-800">
             <button
               type="button"
               onClick={toggleTheme}
-              className="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:opacity-80 transition-all"
-              style={{ backgroundColor: "var(--input-bg)" }}
+              className="w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-slate-800 transition-all duration-200 group"
               aria-label="Toggle theme"
             >
-              <span className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
+              <span className="text-sm font-semibold text-slate-300 group-hover:text-white">
                 {isDark ? "Modo Claro" : "Modo Oscuro"}
               </span>
               {isDark ? (
@@ -285,7 +281,7 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
                   <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
                 </svg>
               ) : (
-                <svg className="w-5 h-5" style={{ color: "var(--foreground)" }} fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-5 h-5 text-slate-400 group-hover:text-white" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
                 </svg>
               )}
@@ -294,7 +290,7 @@ export default function SellerDashboard({ userName }: SellerDashboardProps) {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-8" style={{ backgroundColor: "var(--background)" }}>{renderMainContent()}</main>
+        <main className="flex-1 p-8 bg-slate-50 dark:bg-slate-950">{renderMainContent()}</main>
       </div>
     </div>
   );

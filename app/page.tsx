@@ -4,6 +4,7 @@ import SignOutButton from "./_components/SignOutButton";
 import SellerDashboard from "./rols/seller/pages/MainPage";
 import { redirect } from "next/navigation";
 import MainPage from "./rols/admin/pages/MainPage";
+import BuyerDashboard from "./rols/buyer/pages/MainPage";
 
 export default async function Home() {
   const session = await auth();
@@ -24,13 +25,7 @@ export default async function Home() {
       );
     
     case "usuario":
-      return (
-        <div className="font-sans p-8" style={{ backgroundColor: 'var(--background)', color: 'var(--foreground)' }}>
-          <h1 className="text-2xl font-bold mb-4">User Dashboard</h1>
-          <p>Bienvenido {session.user.name}</p>
-          <SignOutButton />
-        </div>
-      );
+      return <BuyerDashboard userName={session.user.name || "Usuario"} />;
     
     default:
       return (

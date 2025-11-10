@@ -6,135 +6,181 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --card-bg: #ffffff;
-  --border-color: #e5e7eb;
-  --input-bg: #ffffff;
-  --input-border: #d1d5db;
-  --button-bg: #4f46e5;
-  --button-hover: #4338ca;
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card-bg: #1f2937;
-  --border-color: #374151;
-  --input-bg: #374151;
-  --input-border: #4b5563;
-  --button-bg: #6366f1;
-  --button-hover: #4f46e5;
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-.slidebar{
-  --background: #206103;
-  --foreground: #f9fafb;
-}
-
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
+/* ============================================
+   🎨 MAGUIRE-INSPIRED DESIGN SYSTEM - QUICKMART
+   Minimalista, Elegante, Espacioso, Limpio
+   ============================================ */
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  :root {
+    /* Radius System - Más suave */
+    --radius: 0.25rem;
+    --radius-sm: 0.125rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.75rem;
+    
+    /* Spacing System - MÁS GENEROSO */
+    --spacing-xs: 0.75rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2.5rem;
+    --spacing-xl: 4rem;
+    
+    /* Shadow System - MÁS SUTIL */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 4px 8px 0 rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 8px 16px 0 rgba(0, 0, 0, 0.10);
   }
+  
+  /* Typography System - ELEGANTE */
+  html {
+    font-feature-settings: 'liga', 'kern';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 0.01em;
+  }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply font-sans text-neutral-900 dark:text-neutral-50;
+    @apply bg-white dark:bg-neutral-950;
+  }
+  
+  /* Headings - MÁS LIGEROS Y ESPACIADOS */
+  h1 {
+    @apply text-5xl font-light tracking-tight;
+    letter-spacing: -0.02em;
+  }
+  
+  h2 {
+    @apply text-4xl font-light tracking-tight;
+    letter-spacing: -0.01em;
+  }
+  
+  h3 {
+    @apply text-2xl font-normal tracking-tight;
+  }
+  
+  h4 {
+    @apply text-xl font-normal;
+  }
+  
+  /* Smooth scrolling */
+  * {
+    @apply scroll-smooth;
   }
 }
+
+@layer components {
+  /* Minimalista Card - Estilo Maguire */
+  .card {
+    @apply bg-white dark:bg-neutral-900;
+    @apply border border-neutral-200 dark:border-neutral-800;
+    @apply rounded shadow-sm;
+    @apply transition-all duration-300;
+  }
+  
+  .card:hover {
+    @apply shadow-md;
+  }
+  
+  /* Button Primary - Negro minimalista */
+  .btn-primary {
+    @apply bg-neutral-900 dark:bg-neutral-50;
+    @apply text-white dark:text-neutral-900;
+    @apply font-normal text-sm uppercase tracking-wider;
+    @apply px-8 py-3.5 rounded-sm;
+    @apply border border-neutral-900 dark:border-neutral-50;
+    @apply transition-all duration-300;
+    @apply hover:bg-white hover:text-neutral-900;
+    @apply hover:border-neutral-900;
+  }
+  
+  /* Button Secondary - Outline */
+  .btn-secondary {
+    @apply bg-transparent;
+    @apply text-neutral-900 dark:text-neutral-50;
+    @apply font-normal text-sm uppercase tracking-wider;
+    @apply px-8 py-3.5 rounded-sm;
+    @apply border border-neutral-300 dark:border-neutral-700;
+    @apply transition-all duration-300;
+    @apply hover:border-neutral-900 dark:hover:border-neutral-50;
+  }
+  
+  /* Input Minimalista */
+  .input-modern {
+    @apply bg-white dark:bg-neutral-900;
+    @apply border border-neutral-300 dark:border-neutral-700;
+    @apply focus:border-neutral-900 dark:focus:border-neutral-50;
+    @apply focus:outline-none;
+    @apply rounded-sm px-4 py-3;
+    @apply transition-all duration-200;
+    @apply placeholder:text-neutral-400;
+    @apply text-sm;
+  }
+  
+  /* Badge Minimalista */
+  .badge {
+    @apply inline-flex items-center gap-1;
+    @apply px-2.5 py-1 rounded-sm;
+    @apply text-xs font-normal uppercase tracking-wider;
+    @apply transition-all duration-200;
+  }
+  
+  .badge-new {
+    @apply bg-neutral-900 dark:bg-neutral-50;
+    @apply text-white dark:text-neutral-900;
+  }
+  
+  .badge-sale {
+    @apply bg-red-50 dark:bg-red-900/30;
+    @apply text-red-900 dark:text-red-100;
+  }
+}
+
+@layer utilities {
+  /* Text Elegante */
+  .text-maguire {
+    @apply text-neutral-900 dark:text-neutral-50;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+  
+  /* Hover sutil */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-0.5;
+  }
+  
+  /* Fade in suave */
+  .fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Slide in desde right */
+  .animate-slide-in-right {
+    animation: slideInRight 0.4s ease-out;
+  }
+  
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+}
+
