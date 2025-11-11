@@ -1,140 +1,177 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { X, Save, Package, DollarSign, Hash, Tag } from 'lucide-react';
+import { useState } from 'react';
+import { X, Upload, Package } from 'lucide-react';
 import { SellerProduct } from '@/app/_types/product';
 
 interface ProductFormProps {
-  product?: SellerProduct | null;
-  onSubmit: (product: SellerProduct) => Promise<void>;
+  onSubmit: (product: Omit<SellerProduct, 'id'>) => void;
   onCancel: () => void;
+  initialProduct?: SellerProduct;
 }
 
-const CATEGORIES = [
-  'Electrónica',
-  'Ropa y Calzado',
-  'Hogar',
-  'Deportes',
-  'Muebles',
-  'Accesorios',
-  'Herramientas',
-  'Libros',
-  'Juguetes',
-  'Alimentos',
-];
-
-export default function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
-  const [isSaving, setIsSaving] = useState(false);
-  const [formData, setFormData] = useState<SellerProduct>({
-    title: '',
-    description: '',
-    category: CATEGORIES[0],
-    price: 0,
-    stock: 0,
-    image: '',
+export default function ProductForm({ onSubmit, onCancel, initialProduct }: ProductFormProps) {
+  const [formData, setFormData] = useState({
+    title: initialProduct?.title || '',
+    short_description: initialProduct?.short_description || '',
+    description: initialProduct?.description || '',
+    price: initialProduct?.price || '',
+    stock: initialProduct?.stock || '',
+    category: initialProduct?.category || 'Electrónicos',
+    image: initialProduct?.image || '',
   });
 
-  useEffect(() => {
-    if (product) {
-      setFormData(product);
-    }
-  }, [product]);
+  const categories = [
+    'Electrónicos',
+    'Ropa',
+    'Hogar',
+    'Deportes',
+    'Juguetes',
+    'Libros',
+    'Belleza',
+    'Alimentos',
+  ];
 
-  const handleChange = (field: keyof SellerProduct, value: string | number) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validar campos requeridos
+    if (!formData.title || !formData.price || !formData.stock) {
+      alert('Por favor completa todos los campos requeridos: Título, Precio y Stock');
+      return;
+    }
+
+    // Crear el objeto del producto con los nombres correctos para la API
+    const productData = {
+      title: formData.title,
+      short_description: formData.short_description || formData.title,
+      description: formData.description || formData.short_description || formData.title,
+      price: Number(formData.price),
+      stock: Number(formData.stock),
+      category: formData.category,
+      image: formData.image,
+    };
+
+    onSubmit(productData);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSaving(true);
-
-    try {
-      await onSubmit(formData);
-    } catch (error) {
-      console.error('Error al guardar producto:', error);
-      alert('Error al guardar el producto. Por favor, intenta de nuevo.');
-    } finally {
-      setIsSaving(false);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({ ...formData, image: reader.result as string });
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   return (
-    <div className="fixed inset-0 bg-neutral-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white border border-neutral-200 rounded-sm shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-neutral-200 px-8 py-6 flex items-center justify-between">
-          <h2 className="text-2xl font-light text-neutral-900 tracking-tight uppercase">
-            {product?.id ? 'Actualizar Producto' : 'Publicar Producto'}
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-sm max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-neutral-200">
+        {/* Header */}
+        <div className="sticky top-0 bg-white border-b border-neutral-200 p-6 flex items-center justify-between z-10">
+          <h2 className="text-2xl font-light text-neutral-900 uppercase tracking-wider">
+            {initialProduct ? 'Editar Producto' : 'Nuevo Producto'}
           </h2>
           <button
             onClick={onCancel}
-            disabled={isSaving}
-            className="p-2 hover:bg-neutral-100 rounded-sm transition-colors disabled:opacity-50"
+            className="p-2 hover:bg-neutral-100 rounded-sm transition-all"
           >
             <X className="w-5 h-5 text-neutral-600" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Título */}
           <div>
-            <label
-              htmlFor="title"
-              className="flex items-center gap-2 text-sm font-normal text-neutral-700 mb-2 uppercase tracking-wider"
-            >
-              <Tag className="w-4 h-4" />
+            <label className="block text-xs font-light text-neutral-900 uppercase tracking-wider mb-2">
               Título del Producto *
             </label>
             <input
-              id="title"
               type="text"
-              value={formData.title}
-              onChange={(e) => handleChange('title', e.target.value)}
               required
-              className="w-full px-4 py-3 border border-neutral-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
-              placeholder="Nombre del producto"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 font-light"
+              placeholder="Ej: Nike Air Max 2024"
             />
           </div>
 
-          {/* Descripción */}
+          {/* Descripción Corta */}
           <div>
-            <label
-              htmlFor="description"
-              className="flex items-center gap-2 text-sm font-normal text-neutral-700 mb-2 uppercase tracking-wider"
-            >
-              <Package className="w-4 h-4" />
-              Descripción *
+            <label className="block text-xs font-light text-neutral-900 uppercase tracking-wider mb-2">
+              Descripción Corta
+            </label>
+            <input
+              type="text"
+              value={formData.short_description}
+              onChange={(e) => setFormData({ ...formData, short_description: e.target.value })}
+              className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 font-light"
+              placeholder="Breve descripción del producto"
+            />
+          </div>
+
+          {/* Descripción Completa */}
+          <div>
+            <label className="block text-xs font-light text-neutral-900 uppercase tracking-wider mb-2">
+              Descripción Completa
             </label>
             <textarea
-              id="description"
               value={formData.description}
-              onChange={(e) => handleChange('description', e.target.value)}
-              required
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows={4}
-              className="w-full px-4 py-3 border border-neutral-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all resize-none text-neutral-900"
-              placeholder="Describe tu producto en detalle..."
+              className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 font-light resize-none"
+              placeholder="Descripción detallada del producto"
             />
+          </div>
+
+          {/* Precio y Stock */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-light text-neutral-900 uppercase tracking-wider mb-2">
+                Precio (MXN) *
+              </label>
+              <input
+                type="number"
+                required
+                min="0"
+                step="0.01"
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 font-light"
+                placeholder="0.00"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-light text-neutral-900 uppercase tracking-wider mb-2">
+                Stock *
+              </label>
+              <input
+                type="number"
+                required
+                min="0"
+                value={formData.stock}
+                onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 font-light"
+                placeholder="0"
+              />
+            </div>
           </div>
 
           {/* Categoría */}
           <div>
-            <label
-              htmlFor="category"
-              className="flex items-center gap-2 text-sm font-normal text-neutral-700 mb-2 uppercase tracking-wider"
-            >
-              <Tag className="w-4 h-4" />
-              Categoría *
+            <label className="block text-xs font-light text-neutral-900 uppercase tracking-wider mb-2">
+              Categoría
             </label>
             <select
-              id="category"
               value={formData.category}
-              onChange={(e) => handleChange('category', e.target.value)}
-              required
-              className="w-full px-4 py-3 border border-neutral-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all bg-white text-neutral-900"
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 font-light"
             >
-              {CATEGORIES.map((cat) => (
+              {categories.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>
@@ -142,110 +179,46 @@ export default function ProductForm({ product, onSubmit, onCancel }: ProductForm
             </select>
           </div>
 
-          <div className="grid grid-cols-2 gap-6">
-            {/* Precio */}
-            <div>
-              <label
-                htmlFor="price"
-                className="flex items-center gap-2 text-sm font-normal text-neutral-700 mb-2 uppercase tracking-wider"
-              >
-                <DollarSign className="w-4 h-4" />
-                Precio (MXN) *
-              </label>
-              <input
-                id="price"
-                type="number"
-                min="0"
-                step="0.01"
-                value={formData.price}
-                onChange={(e) => handleChange('price', parseFloat(e.target.value) || 0)}
-                required
-                className="w-full px-4 py-3 border border-neutral-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
-                placeholder="0.00"
-              />
-            </div>
-
-            {/* Stock */}
-            <div>
-              <label
-                htmlFor="stock"
-                className="flex items-center gap-2 text-sm font-normal text-neutral-700 mb-2 uppercase tracking-wider"
-              >
-                <Hash className="w-4 h-4" />
-                Stock *
-              </label>
-              <input
-                id="stock"
-                type="number"
-                min="0"
-                step="1"
-                value={formData.stock}
-                onChange={(e) => handleChange('stock', parseInt(e.target.value) || 0)}
-                required
-                className="w-full px-4 py-3 border border-neutral-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
-                placeholder="0"
-              />
-            </div>
-          </div>
-
-          {/* URL de Imagen */}
+          {/* Imagen */}
           <div>
-            <label
-              htmlFor="image"
-              className="flex items-center gap-2 text-sm font-normal text-neutral-700 mb-2 uppercase tracking-wider"
-            >
-              <Package className="w-4 h-4" />
-              URL de Imagen
+            <label className="block text-xs font-light text-neutral-900 uppercase tracking-wider mb-2">
+              Imagen del Producto (URL)
             </label>
             <input
-              id="image"
               type="url"
-              value={formData.image || ''}
-              onChange={(e) => handleChange('image', e.target.value)}
-              className="w-full px-4 py-3 border border-neutral-200 rounded-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent transition-all text-neutral-900"
+              value={formData.image}
+              onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+              className="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 rounded-sm focus:outline-none focus:border-neutral-900 transition-colors text-neutral-900 font-light"
               placeholder="https://ejemplo.com/imagen.jpg"
             />
             {formData.image && (
-              <div className="mt-4 border border-neutral-200 rounded-sm overflow-hidden">
+              <div className="mt-4 relative aspect-square max-w-xs overflow-hidden rounded-sm border border-neutral-200">
                 <img
                   src={formData.image}
-                  alt="Vista previa"
-                  className="w-full h-48 object-cover"
+                  alt="Preview"
+                  className="w-full h-full object-cover"
                   onError={(e) => {
-                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop&q=80';
                   }}
                 />
               </div>
             )}
           </div>
 
-          {/* Botones de acción */}
-          <div className="flex gap-3 pt-4 border-t border-neutral-200">
+          {/* Buttons */}
+          <div className="flex gap-3 pt-6 border-t border-neutral-200">
             <button
               type="button"
               onClick={onCancel}
-              disabled={isSaving}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border border-neutral-300 text-neutral-700 rounded-sm text-sm font-normal uppercase tracking-wider hover:bg-neutral-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-6 py-3 border border-neutral-300 text-neutral-700 rounded-sm text-sm font-normal uppercase tracking-wider hover:bg-neutral-100 transition-colors"
             >
-              <X className="w-4 h-4" />
               Cancelar
             </button>
             <button
               type="submit"
-              disabled={isSaving}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-neutral-900 text-white rounded-sm text-sm font-normal uppercase tracking-wider hover:bg-neutral-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-6 py-3 bg-neutral-900 text-white rounded-sm text-sm font-normal uppercase tracking-wider hover:bg-neutral-800 transition-colors"
             >
-              {isSaving ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Guardando...
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4" />
-                  {product?.id ? 'Actualizar' : 'Publicar'}
-                </>
-              )}
+              {initialProduct ? 'Actualizar' : 'Crear Producto'}
             </button>
           </div>
         </form>

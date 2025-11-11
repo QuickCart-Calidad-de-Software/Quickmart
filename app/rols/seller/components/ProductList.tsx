@@ -1,6 +1,6 @@
 'use client';
 
-import { Package, Edit, Trash2, AlertCircle } from 'lucide-react';
+import { Edit, Trash2, Package, AlertCircle } from 'lucide-react';
 import { SellerProduct } from '@/app/_types/product';
 
 interface ProductListProps {
@@ -67,7 +67,10 @@ export default function ProductList({ products, onEdit, onDelete }: ProductListP
                   alt={product.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   onError={(e) => {
-                    e.currentTarget.src = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop&q=80';
+                    // Si la imagen falla al cargar, mostrar una imagen de respaldo
+                    const target = e.currentTarget;
+                    target.onerror = null; // Prevenir loop infinito
+                    target.src = 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=600&fit=crop&q=80';
                   }}
                 />
               ) : (
@@ -81,7 +84,7 @@ export default function ProductList({ products, onEdit, onDelete }: ProductListP
                 <div className="absolute top-4 right-4 bg-neutral-900/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-sm flex items-center gap-2">
                   <AlertCircle className="w-4 h-4" />
                   <span className="text-xs font-normal uppercase tracking-wider">
-                    {product.stock === 0 ? 'Agotado' : `Solo ${product.stock}`}
+                    {product.stock === 0 ? 'Sin Stock' : 'Stock Bajo'}
                   </span>
                 </div>
               )}
@@ -92,7 +95,7 @@ export default function ProductList({ products, onEdit, onDelete }: ProductListP
               {/* Category Badge */}
               <div className="flex items-center justify-between">
                 <span className="inline-block bg-neutral-100 text-neutral-600 px-3 py-1 rounded-sm uppercase tracking-widest text-xs">
-                  {product.category}
+                  {product.category || 'Sin categoría'}
                 </span>
                 <span className={`px-3 py-1 rounded-sm text-xs font-normal uppercase tracking-wider ${stockStatus.color}`}>
                   {stockStatus.text}
@@ -106,24 +109,27 @@ export default function ProductList({ products, onEdit, onDelete }: ProductListP
 
               {/* Description */}
               <p className="text-sm text-neutral-500 font-light line-clamp-2 min-h-10">
-                {product.description}
+                {product.short_description || product.description || 'Sin descripción'}
               </p>
 
               {/* Price and Stock */}
               <div className="flex items-baseline justify-between pt-4 border-t border-neutral-200">
                 <div>
-                  <p className="text-xs text-neutral-500 uppercase tracking-widest font-light mb-1">
+                  <p className="text-xs text-neutral-500 uppercase tracking-wider font-light mb-1">
                     Precio
                   </p>
-                  <p className="text-2xl font-light text-neutral-900 tracking-tight">
-                    ${product.price.toLocaleString('es-MX')}
+                  <p className="text-2xl font-light text-neutral-900">
+                    ${Number(product.price).toLocaleString('es-MX', {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-neutral-500 uppercase tracking-widest font-light mb-1">
+                  <p className="text-xs text-neutral-500 uppercase tracking-wider font-light mb-1">
                     Stock
                   </p>
-                  <p className="text-xl font-normal text-neutral-900">
+                  <p className="text-2xl font-light text-neutral-900">
                     {product.stock}
                   </p>
                 </div>
@@ -133,16 +139,16 @@ export default function ProductList({ products, onEdit, onDelete }: ProductListP
               <div className="flex gap-2 pt-4">
                 <button
                   onClick={() => onEdit(product)}
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border border-neutral-300 text-neutral-700 rounded-sm text-sm font-normal uppercase tracking-wider hover:bg-neutral-100 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 border border-neutral-300 text-neutral-700 rounded-sm text-xs font-normal uppercase tracking-wider hover:bg-neutral-100 transition-colors"
                 >
-                  <Edit className="w-4 h-4" />
+                  <Edit className="w-3.5 h-3.5" />
                   Editar
                 </button>
                 <button
-                  onClick={() => product.id && handleDelete(product.id, product.title)}
-                  className="flex items-center justify-center gap-2 px-4 py-3 border border-red-300 text-red-700 rounded-sm text-sm font-normal uppercase tracking-wider hover:bg-red-50 transition-colors"
+                  onClick={() => handleDelete(product.id, product.title)}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-red-50 border border-red-200 text-red-600 rounded-sm text-xs font-normal uppercase tracking-wider hover:bg-red-100 transition-colors"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-3.5 h-3.5" />
                   Eliminar
                 </button>
               </div>

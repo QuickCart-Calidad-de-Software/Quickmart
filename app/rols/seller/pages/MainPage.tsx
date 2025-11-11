@@ -1,22 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { SellerProduct, SellerProfile } from '@/app/_types/product';
-import {
-  Package,
-  User as UserIcon,
-  LogOut,
-  Plus,
-  Home,
-  Store,
-} from 'lucide-react';
-import ProfileForm from '../components/ProfileForm';
-import ProductForm from '../components/ProductForm';
+import { SellerProduct } from '@/app/_types/product';
 import ProductList from '../components/ProductList';
-import { MOCK_SELLER_PRODUCTS } from '../data/mockData';
-import { signOut } from 'next-auth/react';
-
-type View = 'profile' | 'products';
+import ProductForm from '../components/ProductForm';
+import { Package, Plus, TrendingUp, DollarSign, ShoppingBag, User, LogOut, Home } from 'lucide-react';
 
 interface SellerDashboardProps {
   userName: string;
@@ -24,258 +12,199 @@ interface SellerDashboardProps {
 }
 
 export default function SellerDashboard({ userName, userId }: SellerDashboardProps) {
-  const [currentView, setCurrentView] = useState<View>('products');
   const [products, setProducts] = useState<SellerProduct[]>([]);
-  const [profile, setProfile] = useState<SellerProfile>({
-    id: userId,
-    name: userName,
-    location: 'Ciudad de México, México',
-  });
+  const [showForm, setShowForm] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<SellerProduct | undefined>();
   const [loading, setLoading] = useState(true);
-  const [showProductForm, setShowProductForm] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<SellerProduct | null>(null);
 
-  // Cargar productos del vendedor
   useEffect(() => {
-    loadProducts();
+    fetchProducts();
   }, [userId]);
 
-  const loadProducts = async () => {
+  const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/seller/products?sellerId=${userId}`);
-      const data = await response.json();
+      const response = await fetch(`/api/products?sellerId=${userId}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-      if (response.ok && data.products && data.products.length > 0) {
-        // Transformar productos de la DB al formato del frontend
-        const transformedProducts = data.products.map((p: any) => ({
-          id: p.id.toString(),
-          title: p.title,
-          description: p.description || '',
-          category: getCategoryName(p.category_id),
-          price: p.price,
-          stock: p.stock,
-          image: p.image || '',
-          active: p.active,
-        }));
-        setProducts(transformedProducts);
-      } else {
-        // Si no hay productos en la base, usar mock data
-        setProducts(MOCK_SELLER_PRODUCTS);
+      const text = await response.text();
+      
+      if (!text) {
+        console.warn('Empty response from server');
+        setProducts([]);
+        return;
+      }
+
+      try {
+        const data = JSON.parse(text);
+        
+        if (data.products && Array.isArray(data.products)) {
+          setProducts(data.products);
+        } else {
+          console.warn('Invalid data format:', data);
+          setProducts([]);
+        }
+      } catch (parseError) {
+        console.error('JSON parse error:', parseError);
+        console.log('Response text:', text);
+        setProducts([]);
       }
     } catch (error) {
-      console.error('Error al cargar productos:', error);
-      setProducts(MOCK_SELLER_PRODUCTS);
+      console.error('Error fetching products:', error);
+      setProducts([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const getCategoryName = (categoryId: number | null): string => {
-    const categories: { [key: number]: string } = {
-      1: 'Electrónica',
-      2: 'Ropa y Calzado',
-      3: 'Hogar',
-      4: 'Deportes',
-      5: 'Muebles',
-      6: 'Accesorios',
-      7: 'Herramientas',
-    };
-    return categories[categoryId || 1] || 'Electrónica';
-  };
-
-  const getCategoryId = (categoryName: string): number => {
-    const categoryMap: { [key: string]: number } = {
-      'Electrónica': 1,
-      'Ropa y Calzado': 2,
-      'Hogar': 3,
-      'Deportes': 4,
-      'Muebles': 5,
-      'Accesorios': 6,
-      'Herramientas': 7,
-    };
-    return categoryMap[categoryName] || 1;
-  };
-
-  const handleCreateProduct = async (productData: SellerProduct) => {
+  const handleCreateProduct = async (productData: Omit<SellerProduct, 'id'>) => {
     try {
-      const response = await fetch('/api/seller/products', {
+      const response = await fetch('/api/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          ...productData,
           sellerId: userId,
-          title: productData.title,
-          description: productData.description,
-          category: getCategoryId(productData.category),
-          price: productData.price,
-          stock: productData.stock,
-          image: productData.image,
         }),
       });
 
-      if (response.ok) {
-        await loadProducts();
-        setShowProductForm(false);
-        alert('Producto publicado exitosamente');
+      if (!response.ok) {
+        const text = await response.text();
+        let errorMessage = 'Error al crear el producto';
+        
+        try {
+          const errorData = JSON.parse(text);
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          errorMessage = text || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      const text = await response.text();
+      
+      if (!text) {
+        throw new Error('Respuesta vacía del servidor');
+      }
+
+      const data = JSON.parse(text);
+      
+      if (data.product) {
+        setProducts([data.product, ...products]);
+        setShowForm(false);
+        alert('✅ Producto creado exitosamente');
+        await fetchProducts(); // Refrescar la lista
       } else {
-        const data = await response.json();
-        alert(data.error || 'Error al publicar el producto');
+        throw new Error('Formato de respuesta inválido');
       }
     } catch (error) {
-      console.error('Error al crear producto:', error);
-      alert('Error al publicar el producto');
+      console.error('Error creating product:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido al crear el producto';
+      alert(`❌ ${errorMessage}`);
     }
   };
 
-  const handleUpdateProduct = async (productData: SellerProduct) => {
+  const handleUpdateProduct = async (productData: Omit<SellerProduct, 'id'>) => {
+    if (!editingProduct?.id) return;
+
     try {
-      const response = await fetch('/api/seller/products', {
+      const response = await fetch(`/api/products/${editingProduct.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: productData.id,
+          ...productData,
           sellerId: userId,
-          title: productData.title,
-          description: productData.description,
-          category: getCategoryId(productData.category),
-          price: productData.price,
-          stock: productData.stock,
-          active: productData.active,
         }),
       });
 
-      if (response.ok) {
-        await loadProducts();
-        setShowProductForm(false);
-        setEditingProduct(null);
-        alert('Producto actualizado exitosamente');
+      if (!response.ok) {
+        const text = await response.text();
+        let errorMessage = 'Error al actualizar el producto';
+        
+        try {
+          const errorData = JSON.parse(text);
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          errorMessage = text || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      const text = await response.text();
+      
+      if (!text) {
+        throw new Error('Respuesta vacía del servidor');
+      }
+
+      const data = JSON.parse(text);
+      
+      if (data.product) {
+        setProducts(
+          products.map((p) => (p.id === editingProduct.id ? data.product : p))
+        );
+        setShowForm(false);
+        setEditingProduct(undefined);
+        alert('✅ Producto actualizado exitosamente');
+        await fetchProducts(); // Refrescar la lista
       } else {
-        const data = await response.json();
-        alert(data.error || 'Error al actualizar el producto');
+        throw new Error('Formato de respuesta inválido');
       }
     } catch (error) {
-      console.error('Error al actualizar producto:', error);
-      alert('Error al actualizar el producto');
+      console.error('Error updating product:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido al actualizar el producto';
+      alert(`❌ ${errorMessage}`);
     }
   };
 
   const handleDeleteProduct = async (productId: string) => {
     try {
-      const response = await fetch(
-        `/api/seller/products?id=${productId}&sellerId=${userId}`,
-        {
-          method: 'DELETE',
-        }
-      );
-
-      if (response.ok) {
-        await loadProducts();
-        alert('Producto eliminado exitosamente');
-      } else {
-        const data = await response.json();
-        alert(data.error || 'Error al eliminar el producto');
-      }
-    } catch (error) {
-      console.error('Error al eliminar producto:', error);
-      alert('Error al eliminar el producto');
-    }
-  };
-
-  const handleUpdateProfile = async (updatedProfile: Partial<SellerProfile>) => {
-    try {
-      const response = await fetch('/api/seller/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: userId,
-          ...updatedProfile,
-        }),
+      const response = await fetch(`/api/products/${productId}`, {
+        method: 'DELETE',
       });
 
-      if (response.ok) {
-        setProfile((prev) => ({ ...prev, ...updatedProfile }));
-        alert('Perfil actualizado exitosamente');
-      } else {
-        const data = await response.json();
-        alert(data.error || 'Error al actualizar el perfil');
+      if (!response.ok) {
+        const text = await response.text();
+        let errorMessage = 'Error al eliminar el producto';
+        
+        try {
+          const errorData = JSON.parse(text);
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          errorMessage = text || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
       }
+
+      setProducts(products.filter((p) => p.id !== productId));
+      alert('✅ Producto eliminado exitosamente');
+      await fetchProducts(); // Refrescar la lista
     } catch (error) {
-      console.error('Error al actualizar perfil:', error);
-      throw error;
+      console.error('Error deleting product:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido al eliminar el producto';
+      alert(`❌ ${errorMessage}`);
     }
   };
 
-  const handleEditProduct = (product: SellerProduct) => {
+  const handleEdit = (product: SellerProduct) => {
     setEditingProduct(product);
-    setShowProductForm(true);
+    setShowForm(true);
   };
 
-  const handleNewProduct = () => {
-    setEditingProduct(null);
-    setShowProductForm(true);
-  };
-
-  const renderContent = () => {
-    switch (currentView) {
-      case 'profile':
-        return (
-          <div className="space-y-8 fade-in">
-            <div>
-              <h1 className="text-4xl font-light text-neutral-900 tracking-tight uppercase mb-2">
-                Mi Perfil
-              </h1>
-              <p className="text-neutral-500 text-lg font-light">
-                Gestiona tu información personal
-              </p>
-            </div>
-            <ProfileForm profile={profile} onUpdate={handleUpdateProfile} />
-          </div>
-        );
-
-      case 'products':
-        return (
-          <div className="space-y-8 fade-in">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl font-light text-neutral-900 tracking-tight uppercase mb-2">
-                  Mis Productos
-                </h1>
-                <p className="text-neutral-500 text-lg font-light">
-                  {products.length} {products.length === 1 ? 'producto publicado' : 'productos publicados'}
-                </p>
-              </div>
-              <button
-                onClick={handleNewProduct}
-                className="flex items-center gap-2 px-6 py-3 bg-neutral-900 text-white rounded-sm text-sm font-normal uppercase tracking-wider hover:bg-neutral-800 transition-colors shadow-lg"
-              >
-                <Plus className="w-5 h-5" />
-                Publicar Producto
-              </button>
-            </div>
-
-            {loading ? (
-              <div className="flex items-center justify-center py-20">
-                <div className="w-12 h-12 border-4 border-neutral-200 border-t-neutral-900 rounded-full animate-spin" />
-              </div>
-            ) : (
-              <ProductList
-                products={products}
-                onEdit={handleEditProduct}
-                onDelete={handleDeleteProduct}
-              />
-            )}
-          </div>
-        );
-
-      default:
-        return null;
-    }
+  const stats = {
+    totalProducts: products.length,
+    activeProducts: products.filter((p) => p.stock > 0).length,
+    totalRevenue: products.reduce((sum, p) => sum + p.price * (100 - p.stock), 0),
+    lowStock: products.filter((p) => p.stock > 0 && p.stock <= 10).length,
   };
 
   return (
@@ -284,10 +213,9 @@ export default function SellerDashboard({ userName, userId }: SellerDashboardPro
       <nav className="bg-neutral-900/95 backdrop-blur-xl border-b border-neutral-800 sticky top-0 z-30 shadow-sm">
         <div className="max-w-7xl mx-auto px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Left Spacer */}
             <div className="w-48"></div>
 
-            {/* Logo - Centered */}
+            {/* Logo Centered */}
             <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3 cursor-pointer group">
               <div className="w-7 h-7 bg-white rounded-sm flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
                 <span className="text-neutral-900 font-light text-base">Q</span>
@@ -297,64 +225,39 @@ export default function SellerDashboard({ userName, userId }: SellerDashboardPro
               </span>
             </div>
 
-            {/* User Profile */}
-            <div className="flex items-center gap-3 pl-5 ml-5 border-l border-neutral-700">
+            {/* User Menu */}
+            <div className="flex items-center gap-3 pl-5 border-l border-neutral-700">
               <div className="text-right hidden sm:block">
-                <div className="text-xs font-normal text-white uppercase tracking-widest">
-                  {userName}
-                </div>
-                <div className="text-[10px] font-light text-neutral-400 uppercase tracking-[0.2em]">
-                  Vendedor
-                </div>
+                <div className="text-xs font-normal text-white uppercase tracking-widest">{userName}</div>
+                <div className="text-[10px] font-light text-neutral-400 uppercase tracking-[0.2em]">Vendedor</div>
               </div>
               <div className="w-8 h-8 bg-white rounded-sm flex items-center justify-center hover:bg-neutral-200 transition-all duration-300 cursor-pointer">
-                <UserIcon className="w-4 h-4 text-neutral-900" />
+                <User className="w-4 h-4 text-neutral-900" />
               </div>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Main Content with Sidebar */}
+      {/* Main Content */}
       <div className="flex">
         {/* Sidebar */}
         <aside className="w-64 bg-white border-r border-neutral-200 min-h-[calc(100vh-4rem)] sticky top-16 hidden lg:block">
           <nav className="p-6 space-y-2">
-            <button
-              onClick={() => setCurrentView('products')}
-              className={`w-full flex items-center gap-4 px-4 py-3 rounded-sm transition-all duration-300 font-normal uppercase tracking-wider text-sm ${
-                currentView === 'products'
-                  ? 'bg-neutral-900 text-white'
-                  : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
-              }`}
-            >
-              <Store className="w-4 h-4" />
+            <button className="w-full flex items-center gap-4 px-4 py-3 rounded-sm bg-neutral-900 text-white transition-all duration-300 font-normal uppercase tracking-wider text-sm">
+              <Package className="w-4 h-4" />
               Productos
-              {products.length > 0 && (
-                <span className="ml-auto bg-neutral-200 text-neutral-900 px-2 py-0.5 rounded-sm text-xs">
-                  {products.length}
-                </span>
-              )}
             </button>
 
-            <button
-              onClick={() => setCurrentView('profile')}
-              className={`w-full flex items-center gap-4 px-4 py-3 rounded-sm transition-all duration-300 font-normal uppercase tracking-wider text-sm ${
-                currentView === 'profile'
-                  ? 'bg-neutral-900 text-white'
-                  : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900'
-              }`}
-            >
-              <UserIcon className="w-4 h-4" />
+            <button className="w-full flex items-center gap-4 px-4 py-3 rounded-sm text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 transition-all duration-300 font-normal uppercase tracking-wider text-sm">
+              <Home className="w-4 h-4" />
               Perfil
             </button>
 
             <div className="pt-6 mt-6 border-t border-neutral-200">
               <button
-                onClick={async () => {
-                  await signOut({ callbackUrl: '/auth/login' });
-                }}
-                className="w-full flex items-center gap-4 px-4 py-3 rounded-sm transition-all duration-300 font-normal uppercase tracking-wider text-sm text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"
+                onClick={() => window.location.href = '/login'}
+                className="w-full flex items-center gap-4 px-4 py-3 rounded-sm text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900 transition-all duration-300 font-normal uppercase tracking-wider text-sm"
               >
                 <LogOut className="w-4 h-4" />
                 Cerrar Sesión
@@ -363,21 +266,108 @@ export default function SellerDashboard({ userName, userId }: SellerDashboardPro
           </nav>
         </aside>
 
-        {/* Main Content */}
+        {/* Main Content Area */}
         <main className="flex-1 p-12 max-w-7xl mx-auto w-full">
-          {renderContent()}
+          <div className="space-y-12">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-4xl font-light text-neutral-900 tracking-tight uppercase mb-2">
+                  Mis Productos
+                </h1>
+                <p className="text-neutral-500 font-light tracking-wide">
+                  Gestiona tu inventario
+                </p>
+              </div>
+              <button
+                onClick={() => {
+                  setEditingProduct(undefined);
+                  setShowForm(true);
+                }}
+                className="flex items-center gap-2 px-6 py-3 bg-neutral-900 text-white rounded-sm text-sm font-normal uppercase tracking-wider hover:bg-neutral-800 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Nuevo Producto
+              </button>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="bg-white rounded-sm p-6 border border-neutral-200">
+                <div className="flex items-center justify-between mb-4">
+                  <Package className="w-10 h-10 text-neutral-400" />
+                </div>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider font-light mb-2">
+                  Total Productos
+                </p>
+                <p className="text-3xl font-light text-neutral-900">
+                  {stats.totalProducts}
+                </p>
+              </div>
+
+              <div className="bg-white rounded-sm p-6 border border-neutral-200">
+                <div className="flex items-center justify-between mb-4">
+                  <ShoppingBag className="w-10 h-10 text-green-500" />
+                </div>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider font-light mb-2">
+                  Activos
+                </p>
+                <p className="text-3xl font-light text-neutral-900">
+                  {stats.activeProducts}
+                </p>
+              </div>
+
+              <div className="bg-white rounded-sm p-6 border border-neutral-200">
+                <div className="flex items-center justify-between mb-4">
+                  <TrendingUp className="w-10 h-10 text-blue-500" />
+                </div>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider font-light mb-2">
+                  Stock Bajo
+                </p>
+                <p className="text-3xl font-light text-neutral-900">
+                  {stats.lowStock}
+                </p>
+              </div>
+
+              <div className="bg-white rounded-sm p-6 border border-neutral-200">
+                <div className="flex items-center justify-between mb-4">
+                  <DollarSign className="w-10 h-10 text-purple-500" />
+                </div>
+                <p className="text-xs text-neutral-500 uppercase tracking-wider font-light mb-2">
+                  Ingresos Est.
+                </p>
+                <p className="text-3xl font-light text-neutral-900">
+                  ${stats.totalRevenue.toLocaleString('es-MX')}
+                </p>
+              </div>
+            </div>
+
+            {/* Products List */}
+            {loading ? (
+              <div className="flex flex-col justify-center items-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-neutral-900 mb-4"></div>
+                <p className="text-neutral-500 font-light">Cargando productos...</p>
+              </div>
+            ) : (
+              <ProductList
+                products={products}
+                onEdit={handleEdit}
+                onDelete={handleDeleteProduct}
+              />
+            )}
+          </div>
         </main>
       </div>
 
       {/* Product Form Modal */}
-      {showProductForm && (
+      {showForm && (
         <ProductForm
-          product={editingProduct}
           onSubmit={editingProduct ? handleUpdateProduct : handleCreateProduct}
           onCancel={() => {
-            setShowProductForm(false);
-            setEditingProduct(null);
+            setShowForm(false);
+            setEditingProduct(undefined);
           }}
+          initialProduct={editingProduct}
         />
       )}
     </div>
