@@ -11,102 +11,124 @@ interface SellerDashboardProps {
   userId: string;
 }
 
+// PRODUCTOS MOCKUP CON IMÁGENES DE UNSPLASH
+const MOCK_PRODUCTS: SellerProduct[] = [
+  {
+    id: '1',
+    sellerId: 'seller1',
+    title: 'iPhone 15 Pro Max',
+    short_description: 'El smartphone más avanzado de Apple',
+    description: 'iPhone 15 Pro Max con chip A17 Pro, cámara de 48MP y titanio aeroespacial. Diseño premium y rendimiento excepcional.',
+    price: 29999,
+    stock: 15,
+    category: 'Electrónicos',
+    image: 'https://images.unsplash.com/photo-1678652197950-164bc550d830?w=800&h=800&fit=crop',
+  },
+  {
+    id: '2',
+    sellerId: 'seller1',
+    title: 'MacBook Pro 16"',
+    short_description: 'Potencia profesional para creativos',
+    description: 'MacBook Pro 16 pulgadas con chip M3 Pro, 36GB RAM y 1TB SSD. Perfecto para edición de video y diseño.',
+    price: 54999,
+    stock: 8,
+    category: 'Electrónicos',
+    image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&h=800&fit=crop',
+  },
+  {
+    id: '3',
+    sellerId: 'seller1',
+    title: 'Nike Air Max 2024',
+    short_description: 'Comodidad y estilo en cada paso',
+    description: 'Zapatillas Nike Air Max 2024 con tecnología Air visible y diseño moderno. Perfectas para running y uso diario.',
+    price: 3499,
+    stock: 45,
+    category: 'Deportes',
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=800&fit=crop',
+  },
+  {
+    id: '4',
+    sellerId: 'seller1',
+    title: 'Sony WH-1000XM5',
+    short_description: 'Cancelación de ruido líder en la industria',
+    description: 'Audífonos premium Sony con cancelación de ruido activa, audio de alta resolución y 30 horas de batería.',
+    price: 8999,
+    stock: 22,
+    category: 'Electrónicos',
+    image: 'https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=800&h=800&fit=crop',
+  },
+  {
+    id: '5',
+    sellerId: 'seller1',
+    title: 'Cámara Canon EOS R5',
+    short_description: 'Captura momentos en 8K',
+    description: 'Cámara profesional Canon EOS R5 con sensor full-frame de 45MP, video 8K y estabilización de 5 ejes.',
+    price: 89999,
+    stock: 5,
+    category: 'Electrónicos',
+    image: 'https://images.unsplash.com/photo-1606980624922-40f6814c9f98?w=800&h=800&fit=crop',
+  },
+  {
+    id: '6',
+    sellerId: 'seller1',
+    title: 'Mochila Peak Design',
+    short_description: 'Diseño inteligente para fotógrafos',
+    description: 'Mochila versátil de 30L con sistema de organización modular, resistente al agua y acceso rápido a tu equipo.',
+    price: 4999,
+    stock: 0,
+    category: 'Accesorios',
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&h=800&fit=crop',
+  },
+  {
+    id: '7',
+    sellerId: 'seller1',
+    title: 'Reloj Garmin Fenix 7',
+    short_description: 'Smartwatch deportivo avanzado',
+    description: 'Reloj GPS multideporte con mapas, métricas de entrenamiento avanzadas y batería de hasta 18 días.',
+    price: 15999,
+    stock: 12,
+    category: 'Deportes',
+    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop',
+  },
+  {
+    id: '8',
+    sellerId: 'seller1',
+    title: 'Lámpara Escritorio LED',
+    short_description: 'Iluminación ajustable para trabajo',
+    description: 'Lámpara LED de escritorio con temperatura de color ajustable, control táctil y puerto USB para carga.',
+    price: 899,
+    stock: 35,
+    category: 'Hogar',
+    image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&h=800&fit=crop',
+  },
+];
+
 export default function SellerDashboard({ userName, userId }: SellerDashboardProps) {
-  const [products, setProducts] = useState<SellerProduct[]>([]);
+  const [products, setProducts] = useState<SellerProduct[]>(MOCK_PRODUCTS);
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<SellerProduct | undefined>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [userId]);
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/products?sellerId=${userId}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const text = await response.text();
-      
-      if (!text) {
-        console.warn('Empty response from server');
-        setProducts([]);
-        return;
-      }
-
-      try {
-        const data = JSON.parse(text);
-        
-        if (data.products && Array.isArray(data.products)) {
-          setProducts(data.products);
-        } else {
-          console.warn('Invalid data format:', data);
-          setProducts([]);
-        }
-      } catch (parseError) {
-        console.error('JSON parse error:', parseError);
-        console.log('Response text:', text);
-        setProducts([]);
-      }
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      setProducts([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Comentar el useEffect que hace fetch a la API
+  // useEffect(() => {
+  //   fetchProducts();
+  // }, [userId]);
 
   const handleCreateProduct = async (productData: Omit<SellerProduct, 'id'>) => {
     try {
-      const response = await fetch('/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...productData,
-          sellerId: userId,
-        }),
-      });
+      // Simular creación de producto
+      const newProduct: SellerProduct = {
+        ...productData,
+        id: `temp-${Date.now()}`,
+        sellerId: userId,
+      };
 
-      if (!response.ok) {
-        const text = await response.text();
-        let errorMessage = 'Error al crear el producto';
-        
-        try {
-          const errorData = JSON.parse(text);
-          errorMessage = errorData.error || errorMessage;
-        } catch {
-          errorMessage = text || errorMessage;
-        }
-        
-        throw new Error(errorMessage);
-      }
-
-      const text = await response.text();
-      
-      if (!text) {
-        throw new Error('Respuesta vacía del servidor');
-      }
-
-      const data = JSON.parse(text);
-      
-      if (data.product) {
-        setProducts([data.product, ...products]);
-        setShowForm(false);
-        alert('✅ Producto creado exitosamente');
-        await fetchProducts(); // Refrescar la lista
-      } else {
-        throw new Error('Formato de respuesta inválido');
-      }
+      setProducts([newProduct, ...products]);
+      setShowForm(false);
+      alert('✅ Producto creado exitosamente (Modo Demo)');
     } catch (error) {
       console.error('Error creating product:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido al crear el producto';
-      alert(`❌ ${errorMessage}`);
+      alert('❌ Error al crear el producto');
     }
   };
 
@@ -114,84 +136,31 @@ export default function SellerDashboard({ userName, userId }: SellerDashboardPro
     if (!editingProduct?.id) return;
 
     try {
-      const response = await fetch(`/api/products/${editingProduct.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...productData,
-          sellerId: userId,
-        }),
-      });
+      const updatedProduct: SellerProduct = {
+        ...productData,
+        id: editingProduct.id,
+        sellerId: userId,
+      };
 
-      if (!response.ok) {
-        const text = await response.text();
-        let errorMessage = 'Error al actualizar el producto';
-        
-        try {
-          const errorData = JSON.parse(text);
-          errorMessage = errorData.error || errorMessage;
-        } catch {
-          errorMessage = text || errorMessage;
-        }
-        
-        throw new Error(errorMessage);
-      }
-
-      const text = await response.text();
-      
-      if (!text) {
-        throw new Error('Respuesta vacía del servidor');
-      }
-
-      const data = JSON.parse(text);
-      
-      if (data.product) {
-        setProducts(
-          products.map((p) => (p.id === editingProduct.id ? data.product : p))
-        );
-        setShowForm(false);
-        setEditingProduct(undefined);
-        alert('✅ Producto actualizado exitosamente');
-        await fetchProducts(); // Refrescar la lista
-      } else {
-        throw new Error('Formato de respuesta inválido');
-      }
+      setProducts(
+        products.map((p) => (p.id === editingProduct.id ? updatedProduct : p))
+      );
+      setShowForm(false);
+      setEditingProduct(undefined);
+      alert('✅ Producto actualizado exitosamente (Modo Demo)');
     } catch (error) {
       console.error('Error updating product:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido al actualizar el producto';
-      alert(`❌ ${errorMessage}`);
+      alert('❌ Error al actualizar el producto');
     }
   };
 
   const handleDeleteProduct = async (productId: string) => {
     try {
-      const response = await fetch(`/api/products/${productId}`, {
-        method: 'DELETE',
-      });
-
-      if (!response.ok) {
-        const text = await response.text();
-        let errorMessage = 'Error al eliminar el producto';
-        
-        try {
-          const errorData = JSON.parse(text);
-          errorMessage = errorData.error || errorMessage;
-        } catch {
-          errorMessage = text || errorMessage;
-        }
-        
-        throw new Error(errorMessage);
-      }
-
       setProducts(products.filter((p) => p.id !== productId));
-      alert('✅ Producto eliminado exitosamente');
-      await fetchProducts(); // Refrescar la lista
+      alert('✅ Producto eliminado exitosamente (Modo Demo)');
     } catch (error) {
       console.error('Error deleting product:', error);
-      const errorMessage = error instanceof Error ? error.message : 'Error desconocido al eliminar el producto';
-      alert(`❌ ${errorMessage}`);
+      alert('❌ Error al eliminar el producto');
     }
   };
 
@@ -203,7 +172,7 @@ export default function SellerDashboard({ userName, userId }: SellerDashboardPro
   const stats = {
     totalProducts: products.length,
     activeProducts: products.filter((p) => p.stock > 0).length,
-    totalRevenue: products.reduce((sum, p) => sum + p.price * (100 - p.stock), 0),
+    totalRevenue: products.reduce((sum, p) => sum + (p.price * Math.min(p.stock, 10)), 0),
     lowStock: products.filter((p) => p.stock > 0 && p.stock <= 10).length,
   };
 
@@ -238,6 +207,11 @@ export default function SellerDashboard({ userName, userId }: SellerDashboardPro
           </div>
         </div>
       </nav>
+
+      {/* Banner Demo Mode */}
+      <div className="bg-blue-500 text-white text-center py-2 text-sm font-medium">
+        🎭 MODO DEMOSTRACIÓN - Productos de prueba con imágenes reales
+      </div>
 
       {/* Main Content */}
       <div className="flex">
