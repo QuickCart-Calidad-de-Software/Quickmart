@@ -21,6 +21,7 @@ import OrderConfirmation from './components/OrderConfirmation';
 import ProductReviews from './components/ProductReviews';
 import NotificationsPanel from './components/NotificationsPanel';
 import PromoCarousel from './components/PromoCarousel';
+import { generateInvoicePDF } from './components/InvoiceGenerator';
 import {
   getCartFromLocalStorage,
   saveCartToLocalStorage,
@@ -152,7 +153,12 @@ export default function BuyerDashboard({ userName }: BuyerDashboardProps) {
   };
 
   const handleDownloadInvoice = (orderId: string) => {
-    alert(`Descargando factura para pedido ${orderId}`);
+    const order = orders.find(o => o.id === orderId);
+    if (order && order.status === 'entregado') {
+      generateInvoicePDF(order);
+    } else {
+      alert('La factura solo está disponible para pedidos entregados');
+    }
   };
 
   const handleSubmitReview = (rating: number, comment: string) => {

@@ -154,7 +154,7 @@ export default function OrderHistory({ orders, onDownloadInvoice }: OrderHistory
                   {order.status === 'entregado' && (
                     <button
                       onClick={() => onDownloadInvoice(order.id)}
-                      className="py-3 px-6 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 rounded-sm hover:bg-neutral-800 dark:hover:bg-neutral-100 transition-all duration-300 font-normal flex items-center gap-3 uppercase tracking-wider text-sm border border-neutral-900 dark:border-white"
+                      className="py-3 px-6 bg-neutral-900 text-white rounded-sm hover:bg-neutral-800 transition-all duration-300 font-normal flex items-center gap-3 uppercase tracking-wider text-sm"
                     >
                       <Download className="w-4 h-4" />
                       Invoice
@@ -206,7 +206,7 @@ export default function OrderHistory({ orders, onDownloadInvoice }: OrderHistory
                         <span className="font-light">${order.subtotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</span>
                       </div>
                       <div className="flex justify-between text-neutral-600 dark:text-neutral-400">
-                        <span className="font-light uppercase tracking-wider text-xs">Tax:</span>
+                        <span className="font-light uppercase tracking-wider text-xs">IVA (16%):</span>
                         <span className="font-light">${order.tax.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</span>
                       </div>
                       <div className="flex justify-between text-neutral-600 dark:text-neutral-400">
@@ -220,8 +220,35 @@ export default function OrderHistory({ orders, onDownloadInvoice }: OrderHistory
                       </div>
                       <div className="flex justify-between text-lg font-light text-neutral-900 dark:text-white pt-4 border-t border-neutral-200 dark:border-neutral-800">
                         <span className="uppercase tracking-wider">Total:</span>
-                        <span>${order.total.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</span>
+                        <span className="font-normal">${order.total.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN</span>
                       </div>
+                      
+                      {/* Invoice Information for Delivered Orders */}
+                      {order.status === 'entregado' && (
+                        <div className="mt-6 pt-6 border-t border-neutral-200 dark:border-neutral-800">
+                          <div className="bg-neutral-50 dark:bg-neutral-900 p-4 rounded-sm space-y-2">
+                            <p className="text-xs text-neutral-600 dark:text-neutral-400 uppercase tracking-wider font-normal mb-3">
+                              Información Fiscal
+                            </p>
+                            <div className="flex justify-between text-xs text-neutral-700 dark:text-neutral-300">
+                              <span className="font-light">Folio de Factura:</span>
+                              <span className="font-normal">INV-{order.id}</span>
+                            </div>
+                            <div className="flex justify-between text-xs text-neutral-700 dark:text-neutral-300">
+                              <span className="font-light">RFC Emisor:</span>
+                              <span className="font-normal">QMK240515K89</span>
+                            </div>
+                            <div className="flex justify-between text-xs text-neutral-700 dark:text-neutral-300">
+                              <span className="font-light">Régimen Fiscal:</span>
+                              <span className="font-normal">General de Ley</span>
+                            </div>
+                            <div className="flex justify-between text-xs text-neutral-700 dark:text-neutral-300">
+                              <span className="font-light">Uso CFDI:</span>
+                              <span className="font-normal">G03 - Gastos en general</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 

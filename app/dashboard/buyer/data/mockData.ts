@@ -177,17 +177,21 @@ export const MOCK_ORDERS: Order[] = [
     userId: 'user1',
     items: [
       {
-        product: MOCK_PRODUCTS[2],
+        product: MOCK_PRODUCTS[2], // Sony WH-1000XM5
+        quantity: 1,
+      },
+      {
+        product: MOCK_PRODUCTS[11], // Mochila The North Face
         quantity: 1,
       },
     ],
-    total: 8218.84,
-    subtotal: 6999,
-    tax: 1119.84,
-    shipping: 99,
+    total: 10795.68,
+    subtotal: 9298, // 6999 + 2299
+    tax: 1487.68, // 16% IVA
+    shipping: 0, // Envío gratis por monto mayor a $500
     status: 'entregado',
-    paymentMethod: 'Tarjeta de crédito',
-    shippingAddress: 'Calle Reforma 123, Col. Centro, CDMX',
+    paymentMethod: 'Tarjeta de Crédito Visa **** 4532',
+    shippingAddress: 'Av. Paseo de la Reforma 222, Piso 8, Col. Juárez, Cuauhtémoc, 06600, Ciudad de México, CDMX',
     date: '2025-10-15',
   },
   {
@@ -195,37 +199,81 @@ export const MOCK_ORDERS: Order[] = [
     userId: 'user1',
     items: [
       {
-        product: MOCK_PRODUCTS[3],
+        product: MOCK_PRODUCTS[3], // Nike Air Max 270
         quantity: 2,
       },
+      {
+        product: MOCK_PRODUCTS[4], // Licuadora Ninja
+        quantity: 1,
+      },
     ],
-    total: 6546.84,
-    subtotal: 5598,
-    tax: 895.68,
+    total: 8044.84,
+    subtotal: 6097, // (2799*2) + 1499
+    tax: 855.52, // 16% IVA
     shipping: 99,
     status: 'enviado',
-    paymentMethod: 'PayPal',
-    shippingAddress: 'Calle Reforma 123, Col. Centro, CDMX',
+    paymentMethod: 'PayPal - correo@ejemplo.com',
+    shippingAddress: 'Av. Universidad 1200, Col. Xoco, Benito Juárez, 03339, Ciudad de México, CDMX',
     date: '2025-11-01',
-    estimatedDelivery: '2025-11-12',
+    estimatedDelivery: '2025-11-27',
   },
   {
     id: 'ORD-003',
     userId: 'user1',
     items: [
       {
-        product: MOCK_PRODUCTS[6],
+        product: MOCK_PRODUCTS[6], // Cafetera Nespresso
         quantity: 1,
       },
     ],
     total: 4058.84,
     subtotal: 3499,
-    tax: 559.84,
-    shipping: 0,
+    tax: 559.84, // 16% IVA
+    shipping: 0, // Envío gratis
     status: 'pendiente',
-    paymentMethod: 'Transferencia bancaria',
-    shippingAddress: 'Calle Reforma 123, Col. Centro, CDMX',
+    paymentMethod: 'Transferencia Bancaria BBVA',
+    shippingAddress: 'Calle Insurgentes Sur 1605, Col. San José Insurgentes, Benito Juárez, 03900, Ciudad de México, CDMX',
     date: '2025-11-08',
+  },
+  {
+    id: 'ORD-004',
+    userId: 'user1',
+    items: [
+      {
+        product: MOCK_PRODUCTS[0], // Laptop Dell XPS 13
+        quantity: 1,
+      },
+      {
+        product: MOCK_PRODUCTS[2], // Sony WH-1000XM5
+        quantity: 1,
+      },
+    ],
+    total: 37097.68,
+    subtotal: 31998, // 24999 + 6999
+    tax: 5119.68, // 16% IVA
+    shipping: 0, // Envío gratis
+    status: 'entregado',
+    paymentMethod: 'Tarjeta de Débito Mastercard **** 8821',
+    shippingAddress: 'Av. Constituyentes 956, Col. Lomas Altas, Miguel Hidalgo, 11950, Ciudad de México, CDMX',
+    date: '2025-09-22',
+  },
+  {
+    id: 'ORD-005',
+    userId: 'user1',
+    items: [
+      {
+        product: MOCK_PRODUCTS[5], // Smart TV Samsung 55"
+        quantity: 1,
+      },
+    ],
+    total: 15098.84,
+    subtotal: 12999,
+    tax: 2079.84, // 16% IVA
+    shipping: 0, // Envío gratis
+    status: 'entregado',
+    paymentMethod: 'Tarjeta de Crédito American Express **** 1005',
+    shippingAddress: 'Av. Revolución 1877, Col. San Ángel, Álvaro Obregón, 01000, Ciudad de México, CDMX',
+    date: '2025-08-10',
   },
 ];
 
